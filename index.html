@@ -73,10 +73,11 @@
             color: white;
             font-size: 32px;
             padding: 25px 60px;
+            transition: all 0.3s ease;
         }
 
         .yes-btn:hover {
-            transform: scale(1.1);
+            transform: scale(1.05);
             box-shadow: 0 6px 25px rgba(102, 126, 234, 0.4);
         }
 
@@ -119,6 +120,89 @@
         @keyframes float {
             0%, 100% { transform: translateY(0) rotate(0deg); }
             50% { transform: translateY(-20px) rotate(10deg); }
+        }
+
+        /* Mobile Responsive Styles */
+        @media (max-width: 768px) {
+            .container {
+                padding: 40px 30px;
+                margin: 20px;
+                max-width: 90%;
+            }
+
+            h1 {
+                font-size: 32px;
+                margin-bottom: 15px;
+            }
+
+            .emoji {
+                font-size: 60px;
+                margin: 20px 0;
+            }
+
+            .buttons {
+                flex-direction: column;
+                gap: 20px;
+                align-items: center;
+                min-height: 150px;
+            }
+
+            button {
+                font-size: 20px;
+                padding: 18px 40px;
+                width: 100%;
+                max-width: 250px;
+            }
+
+            .yes-btn {
+                font-size: 28px;
+                padding: 22px 50px;
+            }
+
+            .hearts {
+                font-size: 30px;
+            }
+
+            .celebration-content {
+                font-size: 32px;
+                padding: 20px;
+            }
+
+            .celebration-content div:last-child {
+                font-size: 60px !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 30px 20px;
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+
+            .emoji {
+                font-size: 50px;
+            }
+
+            button {
+                font-size: 18px;
+                padding: 16px 35px;
+            }
+
+            .yes-btn {
+                font-size: 24px;
+                padding: 20px 45px;
+            }
+
+            .celebration-content {
+                font-size: 28px;
+            }
+
+            .celebration-content div:last-child {
+                font-size: 50px !important;
+            }
         }
     </style>
 </head>
@@ -175,12 +259,10 @@
                 noBtn.style.padding = (20 - moveCount) + 'px ' + (50 - moveCount * 3) + 'px';
             }
             
-            // Make the Yes button bigger and bigger
+            // Make the Yes button text bigger and bigger (not the whole button)
             const yesBtn = document.querySelector('.yes-btn');
-            const newYesSize = 32 + (moveCount * 4);
-            const newYesPadding = 25 + (moveCount * 3);
+            const newYesSize = 32 + (moveCount * 5);
             yesBtn.style.fontSize = newYesSize + 'px';
-            yesBtn.style.padding = newYesPadding + 'px ' + (60 + moveCount * 5) + 'px';
         }
 
         function sayYes() {
