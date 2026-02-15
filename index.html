@@ -3,336 +3,209 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bomnia's Match Game ❤️</title>
+    <title>Please Forgive Me</title>
     <style>
-        :root {
-            --bg-color: #ffe6e9;
-            --card-back: #ffadc6;
-            --card-front: #ffffff;
-            --text-color: #6d4c41;
-            --timer-bar: #ff4d6d;
-        }
-
-        body {
+        * {
             margin: 0;
-            padding: 20px;
-            font-family: 'Comic Sans MS', 'Varela Round', sans-serif;
-            background-color: var(--bg-color);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            color: var(--text-color);
+            padding: 0;
             box-sizing: border-box;
         }
 
-        h1 { margin-bottom: 10px; font-size: 1.8rem; text-align: center; }
-        
-        #stats {
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
             display: flex;
-            justify-content: space-between;
-            width: 100%;
-            max-width: 400px;
-            margin-bottom: 15px;
-            font-weight: bold;
-            font-size: 1.2rem;
-        }
-
-        /* The Grid */
-        #game-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            width: 100%;
-            max-width: 400px;
-            perspective: 1000px;
-        }
-
-        .card {
-            background-color: transparent;
-            cursor: pointer;
-            position: relative;
-            height: 80px; /* Fixed height for cards */
-        }
-
-        .card-inner {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            text-align: center;
-            transition: transform 0.6s;
-            transform-style: preserve-3d;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-
-        .card.flipped .card-inner {
-            transform: rotateY(180deg);
-        }
-
-        .card-front, .card-back {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            backface-visibility: hidden;
-            display: flex;
-            align-items: center;
             justify-content: center;
-            border-radius: 10px;
-            font-size: 2rem;
-        }
-
-        .card-back {
-            background-color: var(--card-back);
-            color: white;
-            font-size: 1.5rem;
-        }
-
-        .card-front {
-            background-color: var(--card-front);
-            transform: rotateY(180deg);
-            border: 2px solid var(--card-back);
-        }
-
-        /* Timer Bar */
-        #timer-container {
-            width: 100%;
-            max-width: 400px;
-            height: 10px;
-            background: #e0e0e0;
-            border-radius: 5px;
-            margin-top: 20px;
+            align-items: center;
             overflow: hidden;
         }
 
-        #timer-fill {
-            height: 100%;
-            width: 100%; /* Start full */
-            background: var(--timer-bar);
-            transition: width 1s linear;
-        }
-
-        /* Overlay Logic */
-        #overlay {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 100;
-            backdrop-filter: blur(4px);
-        }
-
-        .modal {
+        .container {
             background: white;
-            padding: 30px;
-            border-radius: 20px;
+            padding: 60px 80px;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
             text-align: center;
-            max-width: 85%;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-            animation: bounceIn 0.5s;
+            max-width: 600px;
         }
 
-        @keyframes bounceIn {
-            0% { transform: scale(0.8); opacity: 0; }
-            60% { transform: scale(1.1); }
-            100% { transform: scale(1); opacity: 1; }
+        h1 {
+            font-size: 48px;
+            color: #333;
+            margin-bottom: 20px;
+            line-height: 1.3;
+        }
+
+        .highlight {
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .emoji {
+            font-size: 80px;
+            margin: 30px 0;
+            display: block;
+        }
+
+        .buttons {
+            margin-top: 50px;
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            position: relative;
+            min-height: 80px;
         }
 
         button {
-            background: var(--timer-bar);
-            color: white;
+            font-size: 24px;
+            padding: 20px 50px;
             border: none;
-            padding: 10px 25px;
-            border-radius: 20px;
-            font-size: 1rem;
-            margin-top: 15px;
+            border-radius: 50px;
             cursor: pointer;
-        }
-        
-        button:hover {
-            opacity: 0.9;
+            font-weight: bold;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
 
+        .yes-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .yes-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .no-btn {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        .celebration {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .celebration-content {
+            color: white;
+            text-align: center;
+            font-size: 48px;
+            animation: bounce 1s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-30px); }
+        }
+
+        .hearts {
+            position: absolute;
+            font-size: 40px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(10deg); }
+        }
     </style>
 </head>
 <body>
+    <div class="hearts" style="top: 10%; left: 10%;">💕</div>
+    <div class="hearts" style="top: 20%; right: 15%; animation-delay: 1s;">❤️</div>
+    <div class="hearts" style="bottom: 15%; left: 20%; animation-delay: 2s;">💖</div>
+    <div class="hearts" style="bottom: 25%; right: 10%; animation-delay: 1.5s;">💗</div>
 
-    <h1>Find the Pairs for Sumit!</h1>
-
-    <div id="stats">
-        <span>Moves: <span id="move-count">0</span></span>
-        <span>Time: <span id="time-left">45</span>s</span>
-    </div>
-
-    <div id="game-grid">
+    <div class="container">
+        <h1>Please Sorry <span class="highlight">Ania</span></h1>
+        <h1>Forgive Me</h1>
+        <span class="emoji">🥺</span>
+        
+        <div class="buttons">
+            <button class="yes-btn" onclick="sayYes()">Yes ❤️</button>
+            <button class="no-btn" id="noBtn">No</button>
         </div>
-
-    <div id="timer-container">
-        <div id="timer-fill"></div>
     </div>
 
-    <div id="overlay">
-        <div class="modal">
-            <h2 id="end-title">Game Over</h2>
-            <p id="end-message">Message here</p>
-            <hr style="border: 0; border-top: 1px solid #eee; margin: 15px 0;">
-            <p style="font-size: 1.2rem; color: #ff4d6d; font-weight: bold;">
-                But Bomnia, you ALWAYS win Sumit's heart! ❤️
-            </p>
-            <button onclick="initGame()">Play Again</button>
+    <div class="celebration" id="celebration">
+        <div class="celebration-content">
+            <div>🎉 Yay! Thank You! 🎉</div>
+            <div style="font-size: 80px; margin-top: 30px;">❤️💕❤️</div>
         </div>
     </div>
 
     <script>
-        const grid = document.getElementById('game-grid');
-        const moveEl = document.getElementById('move-count');
-        const timeEl = document.getElementById('time-left');
-        const timerFill = document.getElementById('timer-fill');
-        const overlay = document.getElementById('overlay');
-        const endTitle = document.getElementById('end-title');
-        const endMsg = document.getElementById('end-message');
+        const noBtn = document.getElementById('noBtn');
+        let moveCount = 0;
 
-        // Game Variables
-        const totalTime = 45; 
-        let timeLeft = totalTime;
-        let timerId = null;
-        let moves = 0;
-        let hasFlippedCard = false;
-        let lockBoard = false;
-        let firstCard, secondCard;
-        let matchesFound = 0;
+        noBtn.addEventListener('mouseenter', moveButton);
+        noBtn.addEventListener('touchstart', moveButton);
 
-        // The items to match (8 pairs)
-        const items = ['🍕', '✈️', '🎨', '🐶', '🍦', '💍', '🌺', '💌'];
-        
-        function initGame() {
-            // Reset state
-            timeLeft = totalTime;
-            moves = 0;
-            matchesFound = 0;
-            moveEl.innerText = 0;
-            timeEl.innerText = totalTime;
-            timerFill.style.width = '100%';
-            timerFill.style.background = '#ff4d6d';
-            overlay.style.display = 'none';
-            grid.innerHTML = '';
+        function moveButton(e) {
+            e.preventDefault();
+            moveCount++;
             
-            // Create deck
-            // Duplicate items to create pairs
-            let deck = [...items, ...items];
-            // Shuffle
-            deck.sort(() => 0.5 - Math.random());
-
-            // Build grid
-            deck.forEach(item => {
-                const card = document.createElement('div');
-                card.classList.add('card');
-                card.dataset.value = item;
-                
-                card.innerHTML = `
-                    <div class="card-inner">
-                        <div class="card-front">${item}</div>
-                        <div class="card-back">?</div>
-                    </div>
-                `;
-                
-                card.addEventListener('click', flipCard);
-                grid.appendChild(card);
-            });
-
-            // Start Timer
-            if (timerId) clearInterval(timerId);
-            timerId = setInterval(updateTimer, 1000);
-        }
-
-        function updateTimer() {
-            timeLeft--;
-            timeEl.innerText = timeLeft; // Update the text number!
+            const maxX = window.innerWidth - noBtn.offsetWidth - 100;
+            const maxY = window.innerHeight - noBtn.offsetHeight - 100;
             
-            const percentage = (timeLeft / totalTime) * 100;
-            timerFill.style.width = percentage + '%';
-
-            if (timeLeft <= 10) {
-                timerFill.style.background = '#d32f2f'; // Turn red at end
-            }
-
-            if (timeLeft <= 0) {
-                gameOver(false);
+            const randomX = Math.random() * maxX;
+            const randomY = Math.random() * maxY;
+            
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = randomX + 'px';
+            noBtn.style.top = randomY + 'px';
+            noBtn.style.transform = 'none';
+            
+            // Make the button smaller and smaller
+            if (moveCount > 3) {
+                const newSize = Math.max(10, 24 - moveCount * 2);
+                noBtn.style.fontSize = newSize + 'px';
+                noBtn.style.padding = (20 - moveCount) + 'px ' + (50 - moveCount * 3) + 'px';
             }
         }
 
-        function flipCard() {
-            if (lockBoard) return;
-            if (this === firstCard) return;
-
-            this.classList.add('flipped');
-
-            if (!hasFlippedCard) {
-                // First click
-                hasFlippedCard = true;
-                firstCard = this;
-                return;
+        function sayYes() {
+            document.getElementById('celebration').style.display = 'flex';
+            
+            // Create confetti effect
+            for (let i = 0; i < 50; i++) {
+                createConfetti();
             }
-
-            // Second click
-            secondCard = this;
-            moves++;
-            moveEl.innerText = moves;
-            checkForMatch();
         }
 
-        function checkForMatch() {
-            let isMatch = firstCard.dataset.value === secondCard.dataset.value;
-
-            if (isMatch) {
-                disableCards();
-                matchesFound++;
-                if (matchesFound === items.length) {
-                    gameOver(true);
+        function createConfetti() {
+            const confetti = document.createElement('div');
+            confetti.textContent = ['❤️', '💕', '💖', '💗', '🎉', '✨'][Math.floor(Math.random() * 6)];
+            confetti.style.position = 'fixed';
+            confetti.style.left = Math.random() * 100 + '%';
+            confetti.style.top = '-50px';
+            confetti.style.fontSize = '30px';
+            confetti.style.zIndex = '9999';
+            confetti.style.pointerEvents = 'none';
+            document.body.appendChild(confetti);
+            
+            let pos = -50;
+            const fall = setInterval(() => {
+                pos += 5;
+                confetti.style.top = pos + 'px';
+                confetti.style.transform = 'rotate(' + (pos * 2) + 'deg)';
+                
+                if (pos > window.innerHeight) {
+                    clearInterval(fall);
+                    confetti.remove();
                 }
-            } else {
-                unflipCards();
-            }
+            }, 30);
         }
-
-        function disableCards() {
-            firstCard.removeEventListener('click', flipCard);
-            secondCard.removeEventListener('click', flipCard);
-            resetBoard();
-        }
-
-        function unflipCards() {
-            lockBoard = true;
-            setTimeout(() => {
-                firstCard.classList.remove('flipped');
-                secondCard.classList.remove('flipped');
-                resetBoard();
-            }, 1000);
-        }
-
-        function resetBoard() {
-            [hasFlippedCard, lockBoard] = [false, false];
-            [firstCard, secondCard] = [null, null];
-        }
-
-        function gameOver(win) {
-            clearInterval(timerId);
-            setTimeout(() => {
-                overlay.style.display = 'flex';
-                if (win) {
-                    endTitle.innerText = "You Did It! 🎉";
-                    endMsg.innerText = `You cleared the board in ${moves} moves. Amazing memory!`;
-                } else {
-                    endTitle.innerText = "Time's Up! ⏰";
-                    endMsg.innerText = "The clock ran out...";
-                }
-            }, 500);
-        }
-
-        // Start game on load
-        initGame();
     </script>
 </body>
 </html>
