@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Please Forgive Me</title>
+    <title>Thank You, Ania</title>
     <style>
         * {
             margin: 0;
@@ -12,291 +12,81 @@
         }
 
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: 'Georgia', serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             display: flex;
-            justify-content: center;
             align-items: center;
-            overflow: hidden;
+            justify-content: center;
+            padding: 20px;
         }
 
         .container {
             background: white;
-            padding: 60px 80px;
-            border-radius: 30px;
+            border-radius: 20px;
+            padding: 60px 40px;
+            max-width: 600px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
             text-align: center;
-            max-width: 600px;
+            animation: fadeIn 1s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         h1 {
-            font-size: 48px;
-            color: #333;
-            margin-bottom: 20px;
-            line-height: 1.3;
-        }
-
-        .highlight {
+            font-size: 3em;
             color: #667eea;
-            font-weight: bold;
+            margin-bottom: 30px;
+            font-weight: normal;
         }
 
-        .emoji {
-            font-size: 80px;
-            margin: 30px 0;
-            display: block;
+        .heart {
+            font-size: 4em;
+            color: #e63946;
+            margin: 20px 0;
+            animation: heartbeat 1.5s infinite;
         }
 
-        .buttons {
-            margin-top: 50px;
-            display: flex;
-            gap: 30px;
-            justify-content: center;
-            position: relative;
-            min-height: 80px;
-        }
-
-        button {
-            font-size: 24px;
-            padding: 20px 50px;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: transform 0.2s, box-shadow 0.2s;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        .yes-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            font-size: 32px;
-            padding: 25px 60px;
-            transition: all 0.3s ease;
-        }
-
-        .yes-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 25px rgba(102, 126, 234, 0.4);
-        }
-
-        .no-btn {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            color: white;
-        }
-
-        .celebration {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-
-        .celebration-content {
-            color: white;
-            text-align: center;
-            font-size: 48px;
-            animation: bounce 1s infinite;
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-30px); }
-        }
-
-        .hearts {
-            position: absolute;
-            font-size: 40px;
-            animation: float 3s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(10deg); }
-        }
-
-        /* Mobile Responsive Styles */
-        @media (max-width: 768px) {
-            .container {
-                padding: 40px 30px;
-                margin: 20px;
-                max-width: 90%;
+        @keyframes heartbeat {
+            0%, 100% {
+                transform: scale(1);
             }
-
-            h1 {
-                font-size: 32px;
-                margin-bottom: 15px;
-            }
-
-            .emoji {
-                font-size: 60px;
-                margin: 20px 0;
-            }
-
-            .buttons {
-                flex-direction: column;
-                gap: 20px;
-                align-items: center;
-                min-height: 150px;
-            }
-
-            button {
-                font-size: 20px;
-                padding: 18px 40px;
-                width: 100%;
-                max-width: 250px;
-            }
-
-            .yes-btn {
-                font-size: 28px;
-                padding: 22px 50px;
-            }
-
-            .hearts {
-                font-size: 30px;
-            }
-
-            .celebration-content {
-                font-size: 32px;
-                padding: 20px;
-            }
-
-            .celebration-content div:last-child {
-                font-size: 60px !important;
+            50% {
+                transform: scale(1.1);
             }
         }
 
-        @media (max-width: 480px) {
-            .container {
-                padding: 30px 20px;
-            }
+        p {
+            font-size: 1.3em;
+            color: #333;
+            line-height: 1.8;
+            margin: 20px 0;
+        }
 
-            h1 {
-                font-size: 28px;
-            }
-
-            .emoji {
-                font-size: 50px;
-            }
-
-            button {
-                font-size: 18px;
-                padding: 16px 35px;
-            }
-
-            .yes-btn {
-                font-size: 24px;
-                padding: 20px 45px;
-            }
-
-            .celebration-content {
-                font-size: 28px;
-            }
-
-            .celebration-content div:last-child {
-                font-size: 50px !important;
-            }
+        .message {
+            font-style: italic;
+            color: #555;
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 2px solid #f0f0f0;
         }
     </style>
 </head>
 <body>
-    <div class="hearts" style="top: 10%; left: 10%;">💕</div>
-    <div class="hearts" style="top: 20%; right: 15%; animation-delay: 1s;">❤️</div>
-    <div class="hearts" style="bottom: 15%; left: 20%; animation-delay: 2s;">💖</div>
-    <div class="hearts" style="bottom: 25%; right: 10%; animation-delay: 1.5s;">💗</div>
-
     <div class="container">
-        <h1>Please Sorry <span class="highlight">Ania</span></h1>
-        <h1>Forgive Me</h1>
-        <span class="emoji">🥺</span>
-        
-        <div class="buttons">
-            <button class="yes-btn" onclick="sayYes()">Yes ❤️</button>
-            <button class="no-btn" id="noBtn">No</button>
-        </div>
+        <h1>Thank You, Ania</h1>
+        <div class="heart">❤️</div>
+        <p>For forgiving me</p>
+        <p class="message">Your forgiveness means everything to me. Thank you for giving me another chance.</p>
     </div>
-
-    <div class="celebration" id="celebration">
-        <div class="celebration-content">
-            <div>🎉 Yay! Thank You! 🎉</div>
-            <div style="font-size: 80px; margin-top: 30px;">❤️💕❤️</div>
-        </div>
-    </div>
-
-    <script>
-        const noBtn = document.getElementById('noBtn');
-        let moveCount = 0;
-
-        noBtn.addEventListener('mouseenter', moveButton);
-        noBtn.addEventListener('touchstart', moveButton);
-
-        function moveButton(e) {
-            e.preventDefault();
-            moveCount++;
-            
-            const maxX = window.innerWidth - noBtn.offsetWidth - 100;
-            const maxY = window.innerHeight - noBtn.offsetHeight - 100;
-            
-            const randomX = Math.random() * maxX;
-            const randomY = Math.random() * maxY;
-            
-            noBtn.style.position = 'fixed';
-            noBtn.style.left = randomX + 'px';
-            noBtn.style.top = randomY + 'px';
-            noBtn.style.transform = 'none';
-            
-            // Make the No button smaller and smaller
-            if (moveCount > 3) {
-                const newSize = Math.max(10, 24 - moveCount * 2);
-                noBtn.style.fontSize = newSize + 'px';
-                noBtn.style.padding = (20 - moveCount) + 'px ' + (50 - moveCount * 3) + 'px';
-            }
-            
-            // Make the Yes button text bigger and bigger (not the whole button)
-            const yesBtn = document.querySelector('.yes-btn');
-            const newYesSize = 32 + (moveCount * 5);
-            yesBtn.style.fontSize = newYesSize + 'px';
-        }
-
-        function sayYes() {
-            document.getElementById('celebration').style.display = 'flex';
-            
-            // Create confetti effect
-            for (let i = 0; i < 50; i++) {
-                createConfetti();
-            }
-        }
-
-        function createConfetti() {
-            const confetti = document.createElement('div');
-            confetti.textContent = ['❤️', '💕', '💖', '💗', '🎉', '✨'][Math.floor(Math.random() * 6)];
-            confetti.style.position = 'fixed';
-            confetti.style.left = Math.random() * 100 + '%';
-            confetti.style.top = '-50px';
-            confetti.style.fontSize = '30px';
-            confetti.style.zIndex = '9999';
-            confetti.style.pointerEvents = 'none';
-            document.body.appendChild(confetti);
-            
-            let pos = -50;
-            const fall = setInterval(() => {
-                pos += 5;
-                confetti.style.top = pos + 'px';
-                confetti.style.transform = 'rotate(' + (pos * 2) + 'deg)';
-                
-                if (pos > window.innerHeight) {
-                    clearInterval(fall);
-                    confetti.remove();
-                }
-            }, 30);
-        }
-    </script>
 </body>
 </html>
