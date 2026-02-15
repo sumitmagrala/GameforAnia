@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thank You, Ania</title>
+    <title>Interactive Gallery</title>
     <style>
         * {
             margin: 0;
@@ -12,29 +12,138 @@
         }
 
         body {
-            font-family: 'Georgia', serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             padding: 20px;
+            overflow-x: hidden;
         }
 
         .container {
-            background: white;
-            border-radius: 20px;
-            padding: 60px 40px;
-            max-width: 600px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            text-align: center;
-            animation: fadeIn 1s ease-in;
+            max-width: 500px;
+            margin: 0 auto;
         }
 
-        @keyframes fadeIn {
+        h1 {
+            text-align: center;
+            color: white;
+            font-size: 2em;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            animation: fadeInDown 0.8s ease;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .option-btn {
+            background: white;
+            border: none;
+            padding: 25px 15px;
+            border-radius: 20px;
+            font-size: 1em;
+            font-weight: 600;
+            color: #667eea;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .option-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(102, 126, 234, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .option-btn:active::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .option-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.3);
+        }
+
+        .emoji {
+            display: block;
+            font-size: 2em;
+            margin-bottom: 8px;
+        }
+
+        .image-container {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            overflow: hidden;
+            display: none;
+        }
+
+        .image-container.show {
+            display: block;
+        }
+
+        .image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 1.5em;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            z-index: 10;
+            transition: all 0.3s ease;
+        }
+
+        .close-btn:hover {
+            background: white;
+            transform: rotate(90deg);
+        }
+
+        .category-label {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            color: white;
+            padding: 20px;
+            font-size: 1.2em;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
             from {
                 opacity: 0;
-                transform: translateY(20px);
+                transform: translateY(-30px);
             }
             to {
                 opacity: 1;
@@ -42,51 +151,244 @@
             }
         }
 
-        h1 {
-            font-size: 3em;
-            color: #667eea;
-            margin-bottom: 30px;
-            font-weight: normal;
-        }
-
-        .heart {
-            font-size: 4em;
-            color: #e63946;
-            margin: 20px 0;
-            animation: heartbeat 1.5s infinite;
-        }
-
-        @keyframes heartbeat {
-            0%, 100% {
+        @keyframes zoomIn {
+            from {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            to {
+                opacity: 1;
                 transform: scale(1);
             }
-            50% {
-                transform: scale(1.1);
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
             }
         }
 
-        p {
-            font-size: 1.3em;
-            color: #333;
-            line-height: 1.8;
-            margin: 20px 0;
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-100%);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
 
-        .message {
-            font-style: italic;
-            color: #555;
-            margin-top: 30px;
-            padding-top: 30px;
-            border-top: 2px solid #f0f0f0;
+        @keyframes rotateIn {
+            from {
+                opacity: 0;
+                transform: rotate(-200deg) scale(0);
+            }
+            to {
+                opacity: 1;
+                transform: rotate(0) scale(1);
+            }
+        }
+
+        @keyframes bounceIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.3);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            70% {
+                transform: scale(0.9);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes flipIn {
+            from {
+                opacity: 0;
+                transform: perspective(400px) rotateY(90deg);
+            }
+            to {
+                opacity: 1;
+                transform: perspective(400px) rotateY(0);
+            }
+        }
+
+        .anim-zoomIn {
+            animation: zoomIn 0.6s ease;
+        }
+
+        .anim-slideInRight {
+            animation: slideInRight 0.6s ease;
+        }
+
+        .anim-slideInLeft {
+            animation: slideInLeft 0.6s ease;
+        }
+
+        .anim-rotateIn {
+            animation: rotateIn 0.7s ease;
+        }
+
+        .anim-bounceIn {
+            animation: bounceIn 0.8s ease;
+        }
+
+        .anim-flipIn {
+            animation: flipIn 0.6s ease;
+        }
+
+        @media (max-width: 400px) {
+            .option-btn {
+                padding: 20px 10px;
+                font-size: 0.9em;
+            }
+
+            .emoji {
+                font-size: 1.5em;
+            }
+
+            h1 {
+                font-size: 1.5em;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Thank You, Ania</h1>
-        <div class="heart">❤️</div>
-        <p>For forgiving me</p>
-        <p class="message">Your forgiveness means everything to me. Thank you for giving me another chance.</p>
+        <h1>✨ Interactive Gallery ✨</h1>
+        
+        <div class="options-grid">
+            <button class="option-btn" onclick="showImage('beautiful', 'zoomIn')">
+                <span class="emoji">😍</span>
+                Most Beautiful
+            </button>
+            
+            <button class="option-btn" onclick="showImage('cute', 'bounceIn')">
+                <span class="emoji">🥰</span>
+                Most Cute
+            </button>
+            
+            <button class="option-btn" onclick="showImage('haseen', 'slideInRight')">
+                <span class="emoji">💖</span>
+                Most Haseen
+            </button>
+            
+            <button class="option-btn" onclick="showImage('sexy', 'flipIn')">
+                <span class="emoji">🔥</span>
+                Most Hot
+            </button>
+            
+            <button class="option-btn" onclick="showImage('stylish', 'rotateIn')">
+                <span class="emoji">😎</span>
+                Most Stylish
+            </button>
+            
+            <button class="option-btn" onclick="showImage('funny', 'slideInLeft')">
+                <span class="emoji">😂</span>
+                Most Funny
+            </button>
+        </div>
+
+        <div id="imageContainer" class="image-container">
+            <button class="close-btn" onclick="closeImage()">×</button>
+            <img id="displayImage" src="" alt="Gallery Image">
+            <div class="category-label" id="categoryLabel"></div>
+        </div>
     </div>
+
+    <script>
+        // Image URLs for each category (using placeholder images)
+        const images = {
+            beautiful: 'https://picsum.photos/400/400?random=1',
+            cute: 'https://picsum.photos/400/400?random=2',
+            haseen: 'https://picsum.photos/400/400?random=3',
+            sexy: 'https://picsum.photos/400/400?random=4',
+            stylish: 'https://picsum.photos/400/400?random=5',
+            funny: 'https://picsum.photos/400/400?random=6'
+        };
+
+        const labels = {
+            beautiful: '✨ Most Beautiful ✨',
+            cute: '🥰 Most Cute 🥰',
+            haseen: '💖 Most Haseen 💖',
+            sexy: '🔥 Most Hot 🔥',
+            stylish: '😎 Most Stylish 😎',
+            funny: '😂 Most Funny 😂'
+        };
+
+        function showImage(category, animation) {
+            const container = document.getElementById('imageContainer');
+            const img = document.getElementById('displayImage');
+            const label = document.getElementById('categoryLabel');
+
+            // Remove all animation classes
+            container.className = 'image-container show';
+            
+            // Add the specific animation class
+            container.classList.add('anim-' + animation);
+
+            // Set image and label
+            img.src = images[category];
+            label.textContent = labels[category];
+        }
+
+        function closeImage() {
+            const container = document.getElementById('imageContainer');
+            container.style.animation = 'zoomIn 0.3s ease reverse';
+            setTimeout(() => {
+                container.classList.remove('show');
+                container.style.animation = '';
+            }, 300);
+        }
+
+        // Add ripple effect to buttons
+        document.querySelectorAll('.option-btn').forEach(button => {
+            button.addEventListener('click', function(e) {
+                const ripple = document.createElement('span');
+                const rect = this.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                const x = e.clientX - rect.left - size / 2;
+                const y = e.clientY - rect.top - size / 2;
+                
+                ripple.style.cssText = `
+                    position: absolute;
+                    width: ${size}px;
+                    height: ${size}px;
+                    left: ${x}px;
+                    top: ${y}px;
+                    background: rgba(102, 126, 234, 0.3);
+                    border-radius: 50%;
+                    transform: scale(0);
+                    animation: ripple 0.6s ease-out;
+                    pointer-events: none;
+                `;
+                
+                this.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 600);
+            });
+        });
+
+        // Add ripple animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
 </body>
 </html>
