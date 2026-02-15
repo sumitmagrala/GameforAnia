@@ -71,6 +71,8 @@
         .yes-btn {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
+            font-size: 32px;
+            padding: 25px 60px;
         }
 
         .yes-btn:hover {
@@ -166,12 +168,19 @@
             noBtn.style.top = randomY + 'px';
             noBtn.style.transform = 'none';
             
-            // Make the button smaller and smaller
+            // Make the No button smaller and smaller
             if (moveCount > 3) {
                 const newSize = Math.max(10, 24 - moveCount * 2);
                 noBtn.style.fontSize = newSize + 'px';
                 noBtn.style.padding = (20 - moveCount) + 'px ' + (50 - moveCount * 3) + 'px';
             }
+            
+            // Make the Yes button bigger and bigger
+            const yesBtn = document.querySelector('.yes-btn');
+            const newYesSize = 32 + (moveCount * 4);
+            const newYesPadding = 25 + (moveCount * 3);
+            yesBtn.style.fontSize = newYesSize + 'px';
+            yesBtn.style.padding = newYesPadding + 'px ' + (60 + moveCount * 5) + 'px';
         }
 
         function sayYes() {
