@@ -180,6 +180,15 @@
             }
         }
 
+        #buttonContainer {
+            position: relative;
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
         .button {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
@@ -188,7 +197,6 @@
             font-size: 1.2rem;
             border-radius: 50px;
             cursor: pointer;
-            margin: 10px;
             transition: all 0.3s;
             box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
         }
@@ -200,6 +208,11 @@
 
         .button:active {
             transform: translateY(0);
+        }
+
+        #notYetBtn {
+            position: absolute;
+            transition: all 0.3s ease-out;
         }
 
         .hidden {
@@ -239,6 +252,22 @@
                 opacity: 0;
             }
         }
+
+        .taunt-message {
+            position: absolute;
+            bottom: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.9rem;
+            color: #764ba2;
+            font-style: italic;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .taunt-message.show {
+            opacity: 1;
+        }
     </style>
 </head>
 <body>
@@ -263,8 +292,10 @@
 
             <div id="buttonContainer">
                 <button class="button" onclick="forgive()">I Forgive You ❤️</button>
-                <button class="button" onclick="notYet()">Not Yet 💭</button>
+                <button class="button" id="notYetBtn">Not Yet 💭</button>
             </div>
+
+            <div class="taunt-message" id="tauntMessage">😏 Nice try!</div>
 
             <div id="responseMessage" class="hidden"></div>
         </div>
@@ -318,20 +349,82 @@
                 You're absolutely amazing! ✨</p>
             `;
             document.getElementById('buttonContainer').classList.add('hidden');
+            document.getElementById('tauntMessage').classList.remove('show');
             createEmojiRain('❤️');
         }
 
-        function notYet() {
-            const responseDiv = document.getElementById('responseMessage');
-            responseDiv.className = 'forgiveness-message';
-            responseDiv.innerHTML = `
-                <h2 style="margin-bottom: 15px;">I Understand 💙</h2>
-                <p>Take all the time you need, Ania. I'll be here when you're ready. 
-                I truly am sorry and will work to earn your forgiveness. 🌟</p>
-            `;
-            document.getElementById('buttonContainer').classList.add('hidden');
-            createEmojiRain('🌸');
-        }
+        // Make the "Not Yet" button run away!
+        const notYetBtn = document.getElementById('notYetBtn');
+        const tauntMessage = document.getElementById('tauntMessage');
+        let escapeCount = 0;
+
+        const tauntMessages = [
+            "😏 Nice try!",
+            "🏃‍♂️ Catch me if you can!",
+            "😜 Nope!",
+            "🙈 Not happening!",
+            "😅 Almost got me!",
+            "🎯 Your aim needs work!",
+            "💨 Whoosh!",
+            "😎 Too slow!",
+            "🌟 Forgive instead? 👉"
+        ];
+
+        notYetBtn.addEventListener('mouseenter', function() {
+            escapeCount++;
+            
+            // Show taunt message
+            tauntMessage.textContent = tauntMessages[Math.min(escapeCount - 1, tauntMessages.length - 1)];
+            tauntMessage.classList.add('show');
+            
+            setTimeout(() => {
+                tauntMessage.classList.remove('show');
+            }, 1500);
+
+            // Move the button to a random position
+            const container = document.getElementById('buttonContainer');
+            const containerRect = container.getBoundingClientRect();
+            
+            const maxX = 150;
+            const maxY = 30;
+            
+            let newX = (Math.random() - 0.5) * maxX;
+            let newY = (Math.random() - 0.5) * maxY;
+            
+            // Make it move further away each time
+            const multiplier = Math.min(escapeCount * 0.5, 3);
+            newX *= multiplier;
+            newY *= multiplier;
+            
+            notYetBtn.style.transform = `translate(${newX}px, ${newY}px)`;
+            
+            // After 5 attempts, make the button really hard to catch
+            if (escapeCount >= 5) {
+                notYetBtn.style.transition = 'all 0.1s ease-out';
+            }
+            
+            // After 10 attempts, button admits defeat
+            if (escapeCount >= 10) {
+                notYetBtn.textContent = "OK Fine! 😤";
+                notYetBtn.style.transform = 'translate(0, 0)';
+                notYetBtn.onclick = function() {
+                    const responseDiv = document.getElementById('responseMessage');
+                    responseDiv.className = 'forgiveness-message';
+                    responseDiv.innerHTML = `
+                        <h2 style="margin-bottom: 15px;">You're Persistent! 😆</h2>
+                        <p>Alright, you've proven your point. You really want to forgive me! 
+                        Let's just click the other button, shall we? 💕</p>
+                    `;
+                };
+            }
+        });
+
+        // Also run away on click attempt
+        notYetBtn.addEventListener('click', function(e) {
+            if (escapeCount < 10) {
+                e.preventDefault();
+            }
+        });
 
         // Make flowers interactive
         document.querySelectorAll('.flower').forEach(flower => {
