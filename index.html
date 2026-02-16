@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sorry Ania! 🙈</title>
+    <title>Who Is Most</title>
     <style>
         * {
             margin: 0;
@@ -12,288 +12,338 @@
         }
 
         body {
-            font-family: 'Comic Sans MS', 'Arial', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
+            padding: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            padding: 20px;
-            overflow-x: hidden;
         }
 
         .container {
-            text-align: center;
             max-width: 500px;
             width: 100%;
         }
 
         h1 {
+            text-align: center;
             color: white;
             font-size: 2.5em;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-            animation: bounce 1s infinite;
+            animation: fadeInDown 0.8s ease;
         }
 
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        .sorry-face {
-            font-size: 120px;
-            margin: 20px 0;
-            cursor: pointer;
-            transition: transform 0.3s;
-            user-select: none;
-        }
-
-        .sorry-face:active {
-            transform: scale(0.9) rotate(10deg);
-        }
-
-        .message {
-            background: white;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            margin: 20px 0;
-            font-size: 1.2em;
-            line-height: 1.6;
-        }
-
-        .button-container {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            justify-content: center;
-            margin-top: 20px;
-        }
-
-        button {
-            background: #ff6b9d;
-            color: white;
-            border: none;
-            padding: 15px 30px;
+        .subtitle {
+            text-align: center;
+            color: rgba(255,255,255,0.9);
             font-size: 1.1em;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-weight: bold;
-            box-shadow: 0 4px 15px rgba(255, 107, 157, 0.4);
+            margin-bottom: 30px;
+            animation: fadeIn 1s ease;
         }
 
-        button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(255, 107, 157, 0.6);
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
         }
 
-        button:active {
-            transform: translateY(0);
-        }
-
-        #noButton {
-            background: #6c757d;
-            position: relative;
-        }
-
-        .apology-counter {
-            color: white;
-            margin-top: 20px;
-            font-size: 1.2em;
-            font-weight: bold;
-        }
-
-        .confetti {
-            position: fixed;
-            width: 10px;
-            height: 10px;
-            background: #f0f;
-            position: absolute;
-            animation: confetti-fall 3s linear;
-        }
-
-        @keyframes confetti-fall {
-            to {
-                transform: translateY(100vh) rotate(360deg);
-                opacity: 0;
-            }
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        .forgiven-message {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            color: white;
-            padding: 40px;
+        .card {
+            background: white;
             border-radius: 20px;
-            font-size: 1.5em;
-            animation: celebration 0.5s ease-out;
-        }
-
-        @keyframes celebration {
-            0% { transform: scale(0); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
-
-        .gif-container {
-            margin: 20px 0;
-            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            position: relative;
             overflow: hidden;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            animation: fadeInUp 0.6s ease;
         }
 
-        .gif-container img {
-            width: 100%;
-            max-width: 400px;
+        .card:nth-child(1) { animation-delay: 0.1s; }
+        .card:nth-child(2) { animation-delay: 0.2s; }
+        .card:nth-child(3) { animation-delay: 0.3s; }
+        .card:nth-child(4) { animation-delay: 0.4s; }
+        .card:nth-child(5) { animation-delay: 0.5s; }
+        .card:nth-child(6) { animation-delay: 0.6s; }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, transparent, rgba(103, 126, 234, 0.1));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+
+        .card:active {
+            transform: translateY(-2px) scale(0.98);
+        }
+
+        .icon {
+            font-size: 3em;
+            margin-bottom: 10px;
             display: block;
         }
 
-        @media (max-width: 600px) {
+        .label {
+            font-size: 1em;
+            color: #333;
+            font-weight: 600;
+            line-height: 1.3;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            position: relative;
+            animation: zoomIn 0.3s ease;
+        }
+
+        .modal-content img {
+            width: 100%;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        }
+
+        .modal-title {
+            position: absolute;
+            top: -50px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            color: white;
+            font-size: 1.5em;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: -50px;
+            right: 0;
+            background: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 1.5em;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .close-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: rotate(90deg);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes zoomIn {
+            from {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .error-message {
+            color: white;
+            text-align: center;
+            padding: 20px;
+            background: rgba(255,0,0,0.2);
+            border-radius: 10px;
+            margin-top: 10px;
+            display: none;
+        }
+
+        @media (max-width: 400px) {
             h1 {
                 font-size: 2em;
             }
             
-            .sorry-face {
-                font-size: 80px;
+            .card {
+                padding: 15px;
             }
             
-            .message {
-                padding: 20px;
-                font-size: 1em;
+            .icon {
+                font-size: 2.5em;
             }
             
-            button {
-                padding: 12px 24px;
-                font-size: 1em;
+            .label {
+                font-size: 0.9em;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>I'm SO Sorry, Ania! 😭</h1>
+        <h1>✨ Who Is Most ✨</h1>
+        <p class="subtitle">Tap to reveal!</p>
         
-        <div class="sorry-face" id="sorryFace" onclick="changeExpression()">
-            😢
-        </div>
-        
-        <div class="message" id="messageBox">
-            <p id="messageText">
-                I messed up and I know it! 🙈<br><br>
-                I'm sorrier than a penguin who forgot how to swim...<br>
-                Sorrier than a phone with 1% battery...<br>
-                Sorrier than a pizza with pineapple! 🍕<br><br>
-                Can you ever forgive me? 🥺
-            </p>
+        <div class="grid">
+            <div class="card" onclick="showImage('1.jpg', 'Most Beautiful Girl')">
+                <span class="icon">🌟</span>
+                <div class="label">Most Beautiful Girl</div>
+            </div>
+            
+            <div class="card" onclick="showImage('2.jpg', 'Most Hottest Girl')">
+                <span class="icon">🔥</span>
+                <div class="label">Most Hottest Girl</div>
+            </div>
+            
+            <div class="card" onclick="showImage('3.jpg', 'Most Cute Girl')">
+                <span class="icon">💕</span>
+                <div class="label">Most Cute Girl</div>
+            </div>
+            
+            <div class="card" onclick="showImage('4.jpg', 'Most Funny Girl')">
+                <span class="icon">😄</span>
+                <div class="label">Most Funny Girl</div>
+            </div>
+            
+            <div class="card" onclick="showImage('5.jpg', 'Most Naughty Girl')">
+                <span class="icon">😈</span>
+                <div class="label">Most Naughty Girl</div>
+            </div>
+            
+            <div class="card" onclick="showImage('6.jpg', 'Most Khoobsurat Girl')">
+                <span class="icon">👑</span>
+                <div class="label">Most Khoobsurat Girl</div>
+            </div>
         </div>
 
-        <div class="button-container">
-            <button id="yesButton" onclick="forgive()">Yes, I forgive you! 💖</button>
-            <button id="noButton" onclick="tryEscape(event)">No way! 😤</button>
+        <div class="error-message" id="errorMessage">
+            Image not found! Please make sure the image files (1.jpg, 2.jpg, etc.) are in the same folder as this webpage.
         </div>
+    </div>
 
-        <div class="apology-counter">
-            I've said sorry <span id="counter">0</span> times! 
+    <div class="modal" id="modal" onclick="closeModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-title" id="modalTitle"></div>
+            <button class="close-btn" onclick="closeModal()">×</button>
+            <img id="modalImage" src="" alt="Image">
         </div>
     </div>
 
     <script>
-        let sorryCount = 0;
-        let expressions = ['😢', '🥺', '😭', '😰', '🙏', '😔', '💔'];
-        let currentExpression = 0;
-        let escapeAttempts = 0;
-
-        const messages = [
-            "Please? I'll never do it again! 🙏",
-            "I'll buy you ice cream! 🍦",
-            "I'll do your chores for a week! 🧹",
-            "Come on, even puppies get second chances! 🐶",
-            "I promise I've learned my lesson! 📚",
-            "Your smile is too precious to waste on being mad! 😊",
-            "Think of all the good times we've had! 🌟"
-        ];
-
-        function changeExpression() {
-            sorryCount++;
-            document.getElementById('counter').textContent = sorryCount;
+        function showImage(imageName, title) {
+            const modal = document.getElementById('modal');
+            const modalImage = document.getElementById('modalImage');
+            const modalTitle = document.getElementById('modalTitle');
+            const errorMessage = document.getElementById('errorMessage');
             
-            currentExpression = (currentExpression + 1) % expressions.length;
-            document.getElementById('sorryFace').textContent = expressions[currentExpression];
+            modalImage.src = imageName;
+            modalTitle.textContent = title;
             
-            if (sorryCount > 5 && sorryCount % 3 === 0) {
-                const randomMessage = messages[Math.floor(Math.random() * messages.length)];
-                document.getElementById('messageText').innerHTML = randomMessage;
-            }
-        }
-
-        function tryEscape(event) {
-            escapeAttempts++;
-            const button = event.target;
-            const container = document.querySelector('.button-container');
+            modalImage.onload = function() {
+                modal.classList.add('active');
+                errorMessage.style.display = 'none';
+            };
             
-            if (escapeAttempts < 5) {
-                // Make the button run away
-                const maxX = window.innerWidth - button.offsetWidth - 40;
-                const maxY = window.innerHeight - button.offsetHeight - 200;
-                
-                const randomX = Math.random() * Math.min(maxX, 200) - 100;
-                const randomY = Math.random() * Math.min(maxY, 200) - 100;
-                
-                button.style.transform = `translate(${randomX}px, ${randomY}px)`;
-                
-                document.getElementById('messageText').innerHTML = 
-                    "Hey! Stop running away from forgiveness! 😄";
-            } else {
-                // After 5 attempts, auto-forgive
-                forgive();
-            }
-        }
-
-        function forgive() {
-            createConfetti();
-            
-            document.getElementById('messageBox').className = 'message forgiven-message';
-            document.getElementById('sorryFace').textContent = '🎉';
-            document.getElementById('messageText').innerHTML = 
-                "YAAAY! You're the BEST, Ania! 🎊<br><br>Thank you for forgiving me! ❤️<br><br>You're absolutely amazing! 🌟";
-            
-            document.querySelector('.button-container').style.display = 'none';
-            document.querySelector('.apology-counter').style.display = 'none';
-            
-            // Change heading
-            document.querySelector('h1').textContent = "You're Awesome, Ania! 🎉";
-        }
-
-        function createConfetti() {
-            const colors = ['#ff6b9d', '#feca57', '#48dbfb', '#ff9ff3', '#54a0ff'];
-            
-            for (let i = 0; i < 50; i++) {
+            modalImage.onerror = function() {
+                errorMessage.style.display = 'block';
                 setTimeout(() => {
-                    const confetti = document.createElement('div');
-                    confetti.className = 'confetti';
-                    confetti.style.left = Math.random() * 100 + '%';
-                    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
-                    confetti.style.animationDelay = Math.random() * 0.5 + 's';
-                    document.body.appendChild(confetti);
-                    
-                    setTimeout(() => confetti.remove(), 3000);
-                }, i * 30);
-            }
+                    errorMessage.style.display = 'none';
+                }, 3000);
+            };
         }
 
-        // Make the face expression change automatically every few seconds
-        setInterval(() => {
-            if (document.querySelector('.apology-counter').style.display !== 'none') {
-                currentExpression = (currentExpression + 1) % expressions.length;
-                document.getElementById('sorryFace').textContent = expressions[currentExpression];
+        function closeModal() {
+            const modal = document.getElementById('modal');
+            modal.classList.remove('active');
+        }
+
+        // Close modal on escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeModal();
             }
-        }, 2000);
+        });
+
+        // Prevent scroll when modal is open
+        const modal = document.getElementById('modal');
+        const observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (modal.classList.contains('active')) {
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    document.body.style.overflow = 'auto';
+                }
+            });
+        });
+        observer.observe(modal, { attributes: true, attributeFilter: ['class'] });
     </script>
 </body>
 </html>
