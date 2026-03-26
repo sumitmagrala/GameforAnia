@@ -1,33 +1,214 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Google Drive Link</title>
-    <!-- Include Tailwind CSS for modern, responsive styling -->
+    <title>Happy Birthday Ania!</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Inter:wght@300;400;600&display=swap');
+        
+        :root {
+            scroll-snap-type: y mandatory;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%);
+            margin: 0;
+            padding: 0;
+        }
+
+        .font-cursive {
+            font-family: 'Dancing Script', cursive;
+        }
+
+        /* Each section takes full viewport and snaps into place */
+        section {
+            scroll-snap-align: start;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+            position: relative;
+        }
+
+        .floating-heart {
+            position: fixed;
+            pointer-events: none;
+            z-index: 0;
+            animation: float 6s infinite linear;
+            opacity: 0.6;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(105vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+        }
+
+        .img-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 1rem;
+            transition: transform 0.3s ease;
+        }
+
+        .img-fallback {
+            background: #f3f4f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #9ca3af;
+            font-size: 0.75rem;
+            text-align: center;
+            padding: 10px;
+        }
+
+        /* Indicator for scrolling */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-10px);}
+            60% {transform: translateY(-5px);}
+        }
+    </style>
 </head>
-<body class="bg-gray-50 min-h-screen flex items-center justify-center font-sans antialiased text-gray-900">
+<body class="antialiased">
 
-    <div class="text-center p-8 bg-white rounded-2xl shadow-xl max-w-sm w-full mx-4 border border-gray-100">
-        <!-- Optional Icon for visual appeal -->
-        <svg class="w-16 h-16 mx-auto mb-4 text-blue-500" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path d="M19.14 13.04l-3.32-5.74c-.2-.35-.58-.56-.98-.56H8.2c-.4 0-.78.21-.98.56L3.9 13.04c-.2.35-.2.77 0 1.12l3.32 5.74c.2.35.58.56.98.56h6.64c.4 0 .78-.21.98-.56l3.32-5.74c.2-.35.2-.77 0-1.12zm-4.3-1.12H9.16l-1.66-2.87h6.64l-1.66 2.87zm-7.62-.57l1.66-2.87 3.32 5.74-1.66 2.87-3.32-5.74zm9.28 2.87l-1.66 2.87-3.32-5.74 1.66-2.87 3.32 5.74z"/>
-        </svg>
+    <!-- Background Decoration stays fixed while scrolling -->
+    <div id="hearts-container"></div>
 
-        <h1 class="text-2xl font-bold mb-2">Access Files</h1>
-        <p class="text-gray-500 mb-6 text-sm">Click the button below to view the shared Google Drive folder.</p>
+    <!-- Page 1: Welcome -->
+    <section id="page1">
+        <div class="text-center space-y-8 z-10 max-w-md">
+            <h1 class="text-6xl md:text-8xl font-cursive text-pink-600 drop-shadow-sm">Happy Birthday, Ania!</h1>
+            
+            <div class="img-container w-64 h-64 md:w-80 md:h-80 mx-auto glass p-2 rounded-full border-4 border-white shadow-xl">
+                <img src="1.jpg" alt="Ania" class="w-full h-full object-cover rounded-full" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                <div class="img-fallback w-full h-full rounded-full hidden flex-col">
+                    <i data-lucide="image" class="mb-2"></i>
+                    <span>Photo 1</span>
+                </div>
+            </div>
 
-        <!-- The Button linking to your Google Drive folder -->
-        <a 
-            href="https://drive.google.com/drive/folders/1atqzjr_R7XWodRKMShFOsJas8Ijcck3s?usp=drive_link" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            class="inline-block w-full px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-md transition duration-200 ease-in-out transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
-        >
-            Open Drive Folder
-        </a>
-    </div>
+            <p class="text-xl text-pink-700 italic">Scroll down for your surprises...</p>
+        </div>
+        
+        <div class="scroll-indicator text-pink-500">
+            <i data-lucide="chevron-down" class="w-8 h-8"></i>
+        </div>
+    </section>
 
+    <!-- Page 2: Wishes & 2 Pics -->
+    <section id="page2">
+        <div class="text-center space-y-6 z-10 w-full max-w-lg">
+            <h2 class="text-4xl font-cursive text-pink-600">Heartfelt Wishes</h2>
+            
+            <div class="grid grid-cols-2 gap-4 px-4">
+                <div class="img-container aspect-[3/4] glass p-1 shadow-md">
+                    <img src="2.jpg" alt="Memory 2" class="w-full h-full object-cover rounded-lg" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                    <div class="img-fallback w-full h-full hidden flex-col"><span>Photo 2</span></div>
+                </div>
+                <div class="img-container aspect-[3/4] glass p-1 shadow-md">
+                    <img src="3.jpg" alt="Memory 3" class="w-full h-full object-cover rounded-lg" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                    <div class="img-fallback w-full h-full hidden flex-col"><span>Photo 3</span></div>
+                </div>
+            </div>
+
+            <div class="glass p-6 rounded-2xl text-pink-800 space-y-4 shadow-sm mx-4 text-sm md:text-base">
+                <p>✨ May your year be filled with laughter and endless joy.</p>
+                <p>🌟 Wishing you the strength to chase all your biggest dreams.</p>
+                <p>💖 You bring so much light into the lives of everyone around you.</p>
+                <p>🎂 To another year of amazing memories and growth!</p>
+            </div>
+        </div>
+        <div class="scroll-indicator text-pink-500">
+            <i data-lucide="chevron-down" class="w-8 h-8"></i>
+        </div>
+    </section>
+
+    <!-- Page 3: Gallery & More Wishes -->
+    <section id="page3">
+        <div class="text-center space-y-6 z-10 w-full max-w-lg">
+            <h2 class="text-4xl font-cursive text-pink-600">The Best of Times</h2>
+
+            <div class="grid grid-cols-2 gap-3 px-4">
+                <!-- 4 Pics -->
+                <div class="img-container aspect-square glass p-1"><img src="4.jpg" class="w-full h-full object-cover rounded-lg" onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=\'text-xs text-gray-400\'>Photo 4</span>'"></div>
+                <div class="img-container aspect-square glass p-1"><img src="5.jpg" class="w-full h-full object-cover rounded-lg" onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=\'text-xs text-gray-400\'>Photo 5</span>'"></div>
+                <div class="img-container aspect-square glass p-1"><img src="6.jpg" class="w-full h-full object-cover rounded-lg" onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=\'text-xs text-gray-400\'>Photo 6</span>'"></div>
+                <div class="img-container aspect-square glass p-1"><img src="7.jpg" class="w-full h-full object-cover rounded-lg" onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=\'text-xs text-gray-400\'>Photo 7</span>'"></div>
+            </div>
+
+            <div class="glass p-6 rounded-2xl text-pink-900 shadow-sm mx-4 text-sm md:text-base">
+                <p class="text-xl mb-2 font-semibold">Ania, you are truly special.</p>
+                <p class="leading-relaxed">
+                    On this special day, I want you to know how much you are appreciated. 
+                    Thank you for being the wonderful person you are. 
+                </p>
+                <div class="mt-4 flex justify-center gap-4">
+                    <i data-lucide="cake" class="text-pink-500 w-6 h-6"></i>
+                    <i data-lucide="gift" class="text-pink-500 w-6 h-6"></i>
+                    <i data-lucide="heart" class="text-pink-500 w-6 h-6"></i>
+                </div>
+            </div>
+
+            <footer class="pt-4 pb-8 text-pink-400 text-xs">
+                Made with ❤️ for Ania
+            </footer>
+        </div>
+    </section>
+
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Floating Hearts Background Effect
+        function createHeart() {
+            const container = document.getElementById('hearts-container');
+            if (!container) return;
+            
+            const heart = document.createElement('div');
+            heart.classList.add('floating-heart');
+            heart.innerHTML = `<svg width="24" height="24" viewBox="0 0 24 24" fill="#f472b6" stroke="none" xmlns="http://www.w3.org/2000/svg"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l8.84-8.84 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>`;
+            
+            const startLeft = Math.random() * 100;
+            const size = Math.random() * (25 - 10) + 10;
+            const duration = Math.random() * (8 - 5) + 5;
+            
+            heart.style.left = startLeft + 'vw';
+            heart.style.width = size + 'px';
+            heart.style.animationDuration = duration + 's';
+            
+            container.appendChild(heart);
+            
+            setTimeout(() => {
+                heart.remove();
+            }, duration * 1000);
+        }
+
+        // Generate hearts periodically
+        setInterval(createHeart, 600);
+
+        // Initial heart burst
+        window.onload = () => {
+            for(let i=0; i<8; i++) setTimeout(createHeart, i * 150);
+        };
+    </script>
 </body>
 </html>
