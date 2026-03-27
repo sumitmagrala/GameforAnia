@@ -114,17 +114,40 @@
             to { height: 20px; }
         }
 
+        /* Modal & Frame Styles */
         #image-modal {
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.9);
+            background: rgba(0, 0, 0, 0.92);
             z-index: 100;
             justify-content: center;
             align-items: center;
-            padding: 1rem;
+            padding: 1.5rem;
             cursor: zoom-out;
             animation: fadeIn 0.3s ease;
+        }
+
+        .picture-frame {
+            position: relative;
+            background: white;
+            padding: 12px;
+            box-shadow: 
+                0 0 0 4px #fff,
+                0 0 0 6px #d4af37, /* Gold rim */
+                0 20px 50px rgba(0,0,0,0.5);
+            border-radius: 4px;
+            max-width: 95%;
+            max-height: 85vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transform: scale(0.9) rotate(-1deg);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        #image-modal.active .picture-frame {
+            transform: scale(1) rotate(0deg);
         }
 
         @keyframes fadeIn {
@@ -137,12 +160,19 @@
 
     <div id="hearts-container"></div>
 
-    <!-- Full Image Modal -->
+    <!-- Full Image Modal with Frame -->
     <div id="image-modal" onclick="closeFullImage()">
-        <button class="absolute top-6 right-6 text-white p-2 bg-white/10 rounded-full hover:bg-white/20 transition-colors">
-            <i data-lucide="x" class="w-8 h-8"></i>
-        </button>
-        <img id="modal-img" src="" class="max-w-full max-h-[90vh] object-contain rounded shadow-2xl scale-95 transition-transform duration-300" onclick="event.stopPropagation()">
+        <div class="picture-frame" onclick="event.stopPropagation()">
+            <!-- Close button moved inside the frame corner -->
+            <button onclick="closeFullImage()" class="absolute -top-4 -right-4 bg-pink-600 text-white p-1 rounded-full shadow-lg hover:bg-pink-700 transition-colors z-[110] border-2 border-white">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+            
+            <img id="modal-img" src="" class="max-w-full max-h-[70vh] object-contain shadow-inner">
+            <div class="mt-4 text-center">
+                <span class="font-cursive text-2xl text-gray-800">Beautiful Ania</span>
+            </div>
+        </div>
     </div>
 
     <!-- Page 1: Hero Section -->
@@ -187,9 +217,7 @@
         <div class="text-center space-y-6 z-10 w-full max-w-2xl px-4">
             <h2 class="text-4xl font-cursive text-pink-600 mb-6">Tap to Open Wishes</h2>
             
-            <!-- Larger Photo Grid -->
             <div class="grid grid-cols-2 gap-4 md:gap-8 mb-8">
-                <!-- Wishes Row -->
                 <div class="group relative" onclick="revealWish(this, 'May your year be filled with laughter and endless joy! 🌸')">
                     <div class="wish-box glass p-6 md:p-10 rounded-2xl flex flex-col items-center justify-center gap-2 cursor-pointer transition-transform active:scale-95 group-hover:bg-pink-50 h-full">
                         <i data-lucide="gift" class="w-8 h-8 md:w-12 md:h-12 text-pink-500"></i>
@@ -203,7 +231,6 @@
                     </div>
                 </div>
                 
-                <!-- Photos Row (Now even more prominent) -->
                 <div class="img-container aspect-[4/5] glass p-2 polaroid -rotate-2" onclick="showFullImage('2.jpg')">
                     <img src="2.jpg" alt="Memory 2" class="w-full h-full object-cover rounded-lg" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
                     <div class="img-fallback w-full h-full hidden flex-col"><span>Photo 2</span></div>
@@ -228,7 +255,6 @@
         <div class="text-center space-y-8 z-10 w-full max-w-2xl px-4">
             <h2 class="text-4xl font-cursive text-pink-600">Time to Celebrate!</h2>
 
-            <!-- Virtual Cake Interaction -->
             <div class="relative py-2 group" onclick="celebrate()">
                 <div class="mx-auto w-40 h-28 bg-pink-200 rounded-t-3xl border-b-4 border-pink-400 relative shadow-inner">
                     <div class="absolute -top-8 left-1/4 candle" onclick="blowOut(this, event)">
@@ -251,7 +277,6 @@
                 <p class="mt-4 text-[10px] text-pink-500 font-bold uppercase tracking-widest group-hover:scale-105 transition-transform cursor-pointer">Tap to blow out!</p>
             </div>
 
-            <!-- Larger 2x2 Photo Grid instead of 4x1 -->
             <div class="grid grid-cols-2 gap-4 md:gap-6">
                 <div class="img-container aspect-square glass p-2 polaroid -rotate-3" onclick="showFullImage('4.jpg')"><img src="4.jpg" class="w-full h-full object-cover rounded-lg" onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=\'text-xs\'>Photo 4</span>'"></div>
                 <div class="img-container aspect-square glass p-2 polaroid rotate-3" onclick="showFullImage('5.jpg')"><img src="5.jpg" class="w-full h-full object-cover rounded-lg" onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=\'text-xs\'>Photo 5</span>'"></div>
@@ -289,17 +314,16 @@
             modalImg.src = src;
             modal.style.display = 'flex';
             setTimeout(() => {
-                modalImg.style.transform = 'scale(1)';
+                modal.classList.add('active');
             }, 50);
         }
 
         function closeFullImage() {
             const modal = document.getElementById('image-modal');
-            const modalImg = document.getElementById('modal-img');
-            modalImg.style.transform = 'scale(0.95)';
+            modal.classList.remove('active');
             setTimeout(() => {
                 modal.style.display = 'none';
-            }, 200);
+            }, 300);
         }
 
         function revealWish(el, text) {
