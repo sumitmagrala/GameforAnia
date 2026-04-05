@@ -1,425 +1,137 @@
-<!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Birthday Ania!</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Inter:wght@300;400;600&display=swap');
+import React, { useState } from 'react';
+
+export default function App() {
+  const [accepted, setAccepted] = useState(false);
+  const [noStyle, setNoStyle] = useState({});
+  const [reasonIndex, setReasonIndex] = useState(0);
+
+  const reasons = [
+    "Your kindness makes the world better.",
+    "The way you laugh is my favorite sound.",
+    "You have the most beautiful soul I've ever met.",
+    "You're incredibly patient, even with me.",
+    "Life is just better when you're around.",
+    "I admire your strength and grace."
+  ];
+
+  const handleAccept = () => {
+    setAccepted(true);
+  };
+
+  const nextReason = () => {
+    setReasonIndex((prev) => (prev + 1) % reasons.length);
+  };
+
+  // Safe dodging function that uses viewport percentage instead of pixel math
+  const handleDodge = () => {
+    // Keeps the button within 10% to 80% of the screen width/height so it never goes off-screen
+    const randomX = Math.floor(Math.random() * 70) + 10; 
+    const randomY = Math.floor(Math.random() * 70) + 10;
+    
+    setNoStyle({
+      position: 'fixed',
+      left: `${randomX}vw`,
+      top: `${randomY}vh`,
+      zIndex: 50,
+      transition: 'all 0.2s ease-out'
+    });
+  };
+
+  return (
+    <div className="min-h-screen bg-pink-50 flex flex-col items-center justify-center p-4 font-sans text-slate-800">
+      
+      {/* Main Card */}
+      <div className="max-w-md w-full bg-white p-8 rounded-3xl shadow-xl border border-pink-100 text-center relative z-10 overflow-hidden">
         
-        :root {
-            scroll-snap-type: y mandatory;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%, #e9d5ff 100%);
-            margin: 0;
-            padding: 0;
-            overflow-x: hidden;
-        }
-
-        .font-cursive {
-            font-family: 'Dancing Script', cursive;
-        }
-
-        section {
-            scroll-snap-align: start;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem 1rem;
-            position: relative;
-        }
-
-        .floating-heart {
-            position: fixed;
-            pointer-events: none;
-            z-index: 0;
-            animation: float 8s infinite linear;
-            opacity: 0.3;
-        }
-
-        @keyframes float {
-            0% { transform: translateY(105vh) rotate(0deg); opacity: 0.8; }
-            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
-        }
-
-        .glass {
-            background: rgba(255, 255, 255, 0.6);
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            box-shadow: 0 8px 32px 0 rgba(244, 114, 182, 0.1);
-        }
-
-        .polaroid {
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            cursor: zoom-in;
-        }
-
-        .polaroid:hover {
-            transform: scale(1.03) rotate(1deg);
-            z-index: 20;
-        }
-
-        .img-fallback {
-            background: #fdf2f8;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #f472b6;
-            font-size: 0.75rem;
-            text-align: center;
-        }
-
-        .scroll-indicator {
-            position: absolute;
-            bottom: 1.5rem;
-            animation: bounce 2s infinite;
-        }
-
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
-            40% {transform: translateY(-10px);}
-            60% {transform: translateY(-5px);}
-        }
-
-        .candle {
-            cursor: pointer;
-            transition: opacity 0.3s ease;
-        }
-        .flame {
-            animation: flicker 0.6s infinite alternate;
-        }
-        @keyframes flicker {
-            0% { transform: scale(1); opacity: 0.9; }
-            100% { transform: scale(1.1) translateY(-2px); opacity: 1; }
-        }
-
-        .bar {
-            width: 3px;
-            height: 10px;
-            background: #f472b6;
-            display: inline-block;
-            margin: 0 1px;
-            animation: pulse 0.5s infinite alternate;
-        }
-        @keyframes pulse {
-            from { height: 5px; }
-            to { height: 20px; }
-        }
-
-        /* Modal & Frame Styles */
-        #image-modal {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.92);
-            z-index: 100;
-            justify-content: center;
-            align-items: center;
-            padding: 1.5rem;
-            cursor: zoom-out;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .picture-frame {
-            position: relative;
-            background: white;
-            padding: 12px;
-            box-shadow: 
-                0 0 0 4px #fff,
-                0 0 0 6px #d4af37, /* Gold rim */
-                0 20px 50px rgba(0,0,0,0.5);
-            border-radius: 4px;
-            max-width: 95%;
-            max-height: 85vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            transform: scale(0.9) rotate(-1deg);
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        #image-modal.active .picture-frame {
-            transform: scale(1) rotate(0deg);
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-    </style>
-</head>
-<body class="antialiased">
-
-    <div id="hearts-container"></div>
-
-    <!-- Full Image Modal with Frame -->
-    <div id="image-modal" onclick="closeFullImage()">
-        <div class="picture-frame" onclick="event.stopPropagation()">
-            <!-- Close button moved inside the frame corner -->
-            <button onclick="closeFullImage()" class="absolute -top-4 -right-4 bg-pink-600 text-white p-1 rounded-full shadow-lg hover:bg-pink-700 transition-colors z-[110] border-2 border-white">
-                <i data-lucide="x" class="w-6 h-6"></i>
-            </button>
-            
-            <img id="modal-img" src="" class="max-w-full max-h-[70vh] object-contain shadow-inner">
-            <div class="mt-4 text-center">
-                <span class="font-cursive text-2xl text-gray-800">Beautiful Ania</span>
-            </div>
-        </div>
-    </div>
-
-    <!-- Page 1: Hero Section -->
-    <section id="page1">
-        <div class="text-center space-y-8 z-10 max-w-md px-4">
-            <div class="inline-flex items-center gap-2 glass px-4 py-2 rounded-full mb-4 animate-pulse">
-                <div class="flex gap-1">
-                    <div class="bar" style="animation-delay: 0.1s"></div>
-                    <div class="bar" style="animation-delay: 0.3s"></div>
-                    <div class="bar" style="animation-delay: 0.2s"></div>
-                </div>
-                <span class="text-xs font-semibold text-pink-500 uppercase tracking-widest">Birthday Vibes On</span>
+        {!accepted ? (
+          <div className="animate-fade-in">
+            {/* Simple Inline SVG Heart */}
+            <div className="flex justify-center mb-6">
+              <svg 
+                className="w-20 h-20 text-rose-500 animate-bounce" 
+                fill="currentColor" 
+                viewBox="0 0 24 24"
+              >
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+              </svg>
             </div>
 
-            <h1 class="text-6xl md:text-8xl font-cursive text-pink-600 drop-shadow-lg animate-bounce">
-                Happy Birthday, <span class="block">Ania!</span>
-            </h1>
-            
-            <div class="relative">
-                <div class="img-container w-64 h-64 md:w-80 md:h-80 mx-auto glass p-3 rounded-full border-8 border-white shadow-2xl overflow-hidden polaroid" onclick="showFullImage('1.jpg')">
-                    <img src="1.jpg" alt="Ania" class="w-full h-full object-cover rounded-full" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
-                    <div class="img-fallback w-full h-full rounded-full hidden flex-col">
-                        <i data-lucide="camera" class="mb-2"></i>
-                        <span>Photo 1</span>
-                    </div>
-                </div>
-                <i data-lucide="sparkles" class="absolute -top-4 -right-4 text-yellow-400 w-10 h-10 animate-spin-slow"></i>
-                <i data-lucide="star" class="absolute -bottom-4 -left-4 text-pink-400 w-8 h-8 animate-pulse"></i>
-            </div>
+            <h1 className="text-4xl font-bold text-rose-600 mb-2 font-serif italic">I'm Sorry, Ania</h1>
+            <p className="text-rose-400 text-sm tracking-widest uppercase mb-8 font-semibold">Please Forgive Me</p>
 
-            <p class="text-xl text-pink-700 italic font-light">The world became brighter today! ✨</p>
-        </div>
-        
-        <div class="scroll-indicator text-pink-500 flex flex-col items-center gap-1">
-            <span class="text-[10px] uppercase font-bold">Scroll for Surprises</span>
-            <i data-lucide="chevron-down" class="w-8 h-8"></i>
-        </div>
-    </section>
-
-    <!-- Page 2: Interactive Wishes -->
-    <section id="page2">
-        <div class="text-center space-y-6 z-10 w-full max-w-2xl px-4">
-            <h2 class="text-4xl font-cursive text-pink-600 mb-6">Tap to Open Wishes</h2>
-            
-            <div class="grid grid-cols-2 gap-4 md:gap-8 mb-8">
-                <div class="group relative" onclick="revealWish(this, 'May your year be filled with laughter and endless joy! 🌸')">
-                    <div class="wish-box glass p-6 md:p-10 rounded-2xl flex flex-col items-center justify-center gap-2 cursor-pointer transition-transform active:scale-95 group-hover:bg-pink-50 h-full">
-                        <i data-lucide="gift" class="w-8 h-8 md:w-12 md:h-12 text-pink-500"></i>
-                        <span class="text-xs text-pink-400 font-bold">Tap Me</span>
-                    </div>
-                </div>
-                <div class="group relative" onclick="revealWish(this, 'Wishing you the strength to chase all your biggest dreams! 🚀')">
-                    <div class="wish-box glass p-6 md:p-10 rounded-2xl flex flex-col items-center justify-center gap-2 cursor-pointer transition-transform active:scale-95 group-hover:bg-pink-50 h-full">
-                        <i data-lucide="heart" class="w-8 h-8 md:w-12 md:h-12 text-pink-500"></i>
-                        <span class="text-xs text-pink-400 font-bold">Tap Me</span>
-                    </div>
-                </div>
-                
-                <div class="img-container aspect-[4/5] glass p-2 polaroid -rotate-2" onclick="showFullImage('2.jpg')">
-                    <img src="2.jpg" alt="Memory 2" class="w-full h-full object-cover rounded-lg" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
-                    <div class="img-fallback w-full h-full hidden flex-col"><span>Photo 2</span></div>
-                </div>
-                <div class="img-container aspect-[4/5] glass p-2 polaroid rotate-2" onclick="showFullImage('3.jpg')">
-                    <img src="3.jpg" alt="Memory 3" class="w-full h-full object-cover rounded-lg" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
-                    <div class="img-fallback w-full h-full hidden flex-col"><span>Photo 3</span></div>
-                </div>
-            </div>
-
-            <div id="wish-display" class="h-12 flex items-center justify-center text-pink-800 italic font-medium text-sm md:text-lg">
-                Tap the boxes above...
-            </div>
-        </div>
-        <div class="scroll-indicator text-pink-500">
-            <i data-lucide="chevron-down" class="w-8 h-8"></i>
-        </div>
-    </section>
-
-    <!-- Page 3: Final Gallery & Interaction -->
-    <section id="page3">
-        <div class="text-center space-y-8 z-10 w-full max-w-2xl px-4">
-            <h2 class="text-4xl font-cursive text-pink-600">Time to Celebrate!</h2>
-
-            <div class="relative py-2 group" onclick="celebrate()">
-                <div class="mx-auto w-40 h-28 bg-pink-200 rounded-t-3xl border-b-4 border-pink-400 relative shadow-inner">
-                    <div class="absolute -top-8 left-1/4 candle" onclick="blowOut(this, event)">
-                        <div class="w-1.5 h-8 bg-yellow-200 rounded-full mx-auto relative">
-                            <div class="flame w-2.5 h-4 bg-orange-400 rounded-full absolute -top-3 left-1/2 -translate-x-1/2"></div>
-                        </div>
-                    </div>
-                    <div class="absolute -top-10 left-1/2 -translate-x-1/2 candle" onclick="blowOut(this, event)">
-                        <div class="w-1.5 h-10 bg-pink-100 rounded-full mx-auto relative">
-                            <div class="flame w-2.5 h-4 bg-orange-400 rounded-full absolute -top-3 left-1/2 -translate-x-1/2"></div>
-                        </div>
-                    </div>
-                    <div class="absolute -top-8 right-1/4 candle" onclick="blowOut(this, event)">
-                        <div class="w-1.5 h-8 bg-yellow-200 rounded-full mx-auto relative">
-                            <div class="flame w-2.5 h-4 bg-orange-400 rounded-full absolute -top-3 left-1/2 -translate-x-1/2"></div>
-                        </div>
-                    </div>
-                    <div class="w-full h-3 bg-white opacity-60 absolute top-3 rounded-full"></div>
-                </div>
-                <p class="mt-4 text-[10px] text-pink-500 font-bold uppercase tracking-widest group-hover:scale-105 transition-transform cursor-pointer">Tap to blow out!</p>
-            </div>
-
-            <div class="grid grid-cols-2 gap-4 md:gap-6">
-                <div class="img-container aspect-square glass p-2 polaroid -rotate-3" onclick="showFullImage('4.jpg')"><img src="4.jpg" class="w-full h-full object-cover rounded-lg" onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=\'text-xs\'>Photo 4</span>'"></div>
-                <div class="img-container aspect-square glass p-2 polaroid rotate-3" onclick="showFullImage('5.jpg')"><img src="5.jpg" class="w-full h-full object-cover rounded-lg" onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=\'text-xs\'>Photo 5</span>'"></div>
-                <div class="img-container aspect-square glass p-2 polaroid -rotate-1" onclick="showFullImage('6.jpg')"><img src="6.jpg" class="w-full h-full object-cover rounded-lg" onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=\'text-xs\'>Photo 6</span>'"></div>
-                <div class="img-container aspect-square glass p-2 polaroid rotate-1" onclick="showFullImage('7.jpg')"><img src="7.jpg" class="w-full h-full object-cover rounded-lg" onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=\'text-xs\'>Photo 7</span>'"></div>
-            </div>
-
-            <div class="glass p-6 rounded-3xl text-pink-900 shadow-xl border-white border-4 mx-4">
-                <p class="text-2xl mb-1 font-cursive font-bold">You are loved, Ania!</p>
-                <p class="text-xs italic opacity-80 leading-relaxed mb-4">
-                    Today, the world celebrates your presence. Enjoy every single moment!
+            <div className="space-y-4 text-slate-600 mb-8 leading-relaxed">
+              <p>
+                Ania, I truly regret what happened. I've been thinking a lot, and I realize I messed up. You are too special to be hurt.
+              </p>
+              
+              {/* Interactive Reason Box */}
+              <div 
+                onClick={nextReason}
+                className="bg-rose-50 p-4 rounded-2xl cursor-pointer hover:bg-rose-100 transition-colors border border-rose-100 mt-6"
+              >
+                <p className="text-xs text-rose-400 uppercase font-bold mb-2">Why you are special:</p>
+                <p className="italic text-rose-600 font-medium h-12 flex items-center justify-center select-none">
+                  "{reasons[reasonIndex]}"
                 </p>
-                <div class="flex justify-center gap-6">
-                    <button onclick="celebrate()" class="p-3 bg-pink-500 text-white rounded-full shadow-lg hover:bg-pink-600 transition-all">
-                        <i data-lucide="party-popper" class="w-5 h-5"></i>
-                    </button>
-                    <button onclick="window.scrollTo({top:0, behavior:'smooth'})" class="p-3 bg-white text-pink-500 rounded-full shadow-md hover:bg-pink-50 transition-all">
-                        <i data-lucide="arrow-up" class="w-5 h-5"></i>
-                    </button>
-                </div>
+                <p className="text-[10px] text-rose-400 mt-2">(Tap to change)</p>
+              </div>
             </div>
 
-            <footer class="pb-10 text-pink-400 text-[10px] font-bold tracking-widest uppercase opacity-60">
-                Created with Love & Sparkles
-            </footer>
-        </div>
-    </section>
+            <p className="text-slate-400 mb-4 italic text-sm">Will you forgive me?</p>
 
-    <script>
-        lucide.createIcons();
+            {/* Buttons Container */}
+            <div className="flex flex-col gap-3 relative min-h-[120px] items-center justify-center">
+              <button
+                onClick={handleAccept}
+                className="w-full sm:w-3/4 bg-rose-500 hover:bg-rose-600 text-white font-bold py-4 px-6 rounded-full shadow-lg transition-all transform active:scale-95 text-lg"
+              >
+                Yes, I forgive you
+              </button>
 
-        function showFullImage(src) {
-            const modal = document.getElementById('image-modal');
-            const modalImg = document.getElementById('modal-img');
-            modalImg.src = src;
-            modal.style.display = 'flex';
-            setTimeout(() => {
-                modal.classList.add('active');
-            }, 50);
+              <button
+                onMouseEnter={handleDodge}
+                onTouchStart={handleDodge}
+                onClick={handleDodge}
+                style={noStyle}
+                className="w-full sm:w-3/4 border-2 border-rose-200 text-rose-400 py-3 px-6 rounded-full font-bold bg-white hover:bg-rose-50"
+              >
+                No
+              </button>
+            </div>
+          </div>
+        ) : (
+          /* Success Screen */
+          <div className="py-8 animate-fade-in">
+            <div className="flex justify-center mb-6">
+              <div className="bg-rose-100 p-6 rounded-full">
+                <svg 
+                  className="w-24 h-24 text-rose-500" 
+                  fill="currentColor" 
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                </svg>
+              </div>
+            </div>
+            <h2 className="text-3xl font-bold text-rose-600 mb-4 font-serif italic">Thank you, Ania!</h2>
+            <p className="text-slate-600 leading-relaxed mb-6 text-lg">
+              You've made me the happiest person. I promise to do better and keep that beautiful smile on your face. ❤️
+            </p>
+          </div>
+        )}
+      </div>
+
+      <style>{`
+        .animate-fade-in {
+          animation: fadeIn 0.6s ease-out forwards;
         }
-
-        function closeFullImage() {
-            const modal = document.getElementById('image-modal');
-            modal.classList.remove('active');
-            setTimeout(() => {
-                modal.style.display = 'none';
-            }, 300);
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(10px); }
+          to { opacity: 1; transform: translateY(0); }
         }
+      `}</style>
+    </div>
+  );
+}
 
-        function revealWish(el, text) {
-            const display = document.getElementById('wish-display');
-            display.style.opacity = '0';
-            setTimeout(() => {
-                display.innerText = text;
-                display.style.opacity = '1';
-                display.classList.add('animate-bounce');
-                setTimeout(() => display.classList.remove('animate-bounce'), 1000);
-            }, 200);
-            
-            const box = el.querySelector('.wish-box');
-            box.classList.add('bg-pink-100', 'border-pink-300');
-            confetti({
-                particleCount: 15,
-                spread: 40,
-                origin: { y: 0.6 },
-                colors: ['#f472b6', '#fb923c', '#fcd34d']
-            });
-        }
 
-        function blowOut(el, event) {
-            event.stopPropagation();
-            const flame = el.querySelector('.flame');
-            if (flame) {
-                flame.style.display = 'none';
-                confetti({
-                    particleCount: 8,
-                    spread: 15,
-                    origin: { x: event.clientX / window.innerWidth, y: event.clientY / window.innerHeight },
-                    colors: ['#ffffff', '#fce7f3']
-                });
-            }
-        }
-
-        function celebrate() {
-            const duration = 2 * 1000;
-            const end = Date.now() + duration;
-
-            (function frame() {
-                confetti({
-                    particleCount: 2,
-                    angle: 60,
-                    spread: 45,
-                    origin: { x: 0 },
-                    colors: ['#f472b6', '#ec4899']
-                });
-                confetti({
-                    particleCount: 2,
-                    angle: 120,
-                    spread: 45,
-                    origin: { x: 1 },
-                    colors: ['#f472b6', '#ec4899']
-                });
-
-                if (Date.now() < end) {
-                    requestAnimationFrame(frame);
-                }
-            }());
-        }
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting && entry.target.id === 'page3') {
-                    celebrate();
-                }
-            });
-        }, { threshold: 0.5 });
-
-        observer.observe(document.getElementById('page3'));
-
-        function createHeart() {
-            const container = document.getElementById('hearts-container');
-            if (container.children.length > 10) return; 
-
-            const heart = document.createElement('div');
-            heart.classList.add('floating-heart');
-            heart.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="#f472b6" xmlns="http://www.w3.org/2000/svg"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l8.84-8.84 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>`;
-            
-            const startLeft = Math.random() * 100;
-            const size = Math.random() * (15 - 8) + 8;
-            const duration = Math.random() * (10 - 6) + 6;
-            
-            heart.style.left = startLeft + 'vw';
-            heart.style.width = size + 'px';
-            heart.style.animationDuration = duration + 's';
-            
-            container.appendChild(heart);
-            setTimeout(() => heart.remove(), duration * 1000);
-        }
-
-        setInterval(createHeart, 2500); 
-        window.onload = () => {
-            for(let i=0; i<3; i++) setTimeout(createHeart, i * 400);
-        };
-    </script>
-</body>
-</html>
