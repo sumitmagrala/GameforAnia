@@ -2,226 +2,327 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>For Ania 🥺</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800&family=Pacifico&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Nunito', sans-serif;
-            background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
-            overflow: hidden; /* Prevent scrolling when Yes button gets huge */
-            touch-action: manipulation; /* Improve mobile tap behavior */
-        }
-        
-        .title-font {
-            font-family: 'Pacifico', cursive;
-        }
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Girlfriend Day, Bomnia! 💖 | August 1st</title>
+    <meta name="description" content="A special, interactive Girlfriend Day page made for Bomnia, packed with fun mini-games, sarcastic love, quizzes, and rewards!">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
-        /* Cute bounce animation */
-        @keyframes gentle-bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-        .animate-bounce-gentle {
-            animation: gentle-bounce 2s ease-in-out infinite;
-        }
-
-        /* Fade in animation */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .fade-in {
-            animation: fadeIn 0.5s ease-out forwards;
-        }
-
-        /* Floating Hearts Animation */
-        .heart {
-            position: absolute;
-            font-size: 2rem;
-            animation: floatUp 4s ease-in forwards;
-            opacity: 0;
-            pointer-events: none;
-            z-index: 50;
-        }
-        @keyframes floatUp {
-            0% { transform: translateY(100vh) scale(0.5); opacity: 1; }
-            100% { transform: translateY(-20vh) scale(1.5); opacity: 0; }
-        }
-
-        /* Smooth transitions for buttons */
-        #btn-yes, #btn-no {
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
-<body class="min-h-screen flex items-center justify-center bg-gradient-to-br from-pink-100 to-purple-200">
+<body class="theme-sweet">
+    <!-- Background Particle Floating Canvas -->
+    <canvas id="bg-particles"></canvas>
 
-    <!-- Step 1: Apology Sequence -->
-    <div id="step-1" class="text-center w-full max-w-md px-6 fade-in flex flex-col items-center">
-        <div class="text-6xl mb-6 animate-bounce-gentle" id="emoji-display">🥺</div>
-        
-        <div class="bg-white/60 backdrop-blur-md p-8 rounded-3xl shadow-xl w-full border border-white/50">
-            <h1 class="title-font text-3xl text-pink-500 mb-4">Dear Ania,</h1>
-            <p id="apology-text" class="text-lg text-gray-700 font-semibold mb-8 min-h-[4rem] flex items-center justify-center">
-                I wanted to talk to you...
+    <!-- Navigation / Header Bar -->
+    <header class="top-nav">
+        <div class="nav-brand">
+            <span class="heart-pulse">💖</span> BomniaDay <span class="nav-tag">Aug 1st</span>
+        </div>
+        <div class="nav-controls">
+            <button id="theme-toggle" class="btn-icon" title="Toggle Drama / Romance Theme">
+                <i class="fa-solid fa-wand-magic-sparkles"></i> <span id="theme-text">Drama Mode</span>
+            </button>
+            <button id="audio-toggle" class="btn-icon" title="Toggle Sound FX & Music">
+                <i class="fa-solid fa-volume-high" id="audio-icon"></i>
+            </button>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <section class="hero-section glass-card">
+            <div class="hero-badge">
+                <i class="fa-solid fa-calendar-heart"></i> National Girlfriend Day • August 1st
+            </div>
+            
+            <div class="avatar-wrapper">
+                <div class="avatar-ring"></div>
+                <img src="assets/bomnia_avatar.jpg" alt="Bomnia Avatar" class="avatar-img">
+                <span class="crown-badge">👑</span>
+            </div>
+
+            <h1 class="hero-title">Happy Girlfriend Day, <span class="highlight-text">Bomnia!</span></h1>
+            <p class="hero-subtitle">
+                A custom universe made of <strong>99% unconditional love</strong> and <strong>1% unprovoked sarcasm</strong>.
             </p>
+
+            <div class="stats-bar">
+                <div class="stat-item">
+                    <span class="stat-number" id="days-count">365+</span>
+                    <span class="stat-label">Days of Chaos</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <span class="stat-number">100%</span>
+                    <span class="stat-label">Always Right</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <span class="stat-number">∞</span>
+                    <span class="stat-label">Boba Owed</span>
+                </div>
+            </div>
+
+            <div class="hero-actions">
+                <a href="#decision-game" class="btn btn-primary">
+                    <i class="fa-solid fa-gamepad"></i> Play The Games
+                </a>
+                <a href="#love-envelope" class="btn btn-secondary">
+                    <i class="fa-solid fa-envelope-open-text"></i> Open Love Letter
+                </a>
+            </div>
+        </section>
+
+        <!-- Quick Interactive Bar: Sarcastic Love Quote Generator -->
+        <section class="quote-section glass-card">
+            <div class="quote-header">
+                <h3><i class="fa-solid fa-comment-dots"></i> Daily Sarcastic Love Injection</h3>
+                <button id="next-quote-btn" class="btn btn-sm">
+                    <i class="fa-solid fa-dice"></i> Hit Me With Facts
+                </button>
+            </div>
+            <div class="quote-box">
+                <p id="quote-display">"I love you more than you love overthinking things at 2:00 AM."</p>
+            </div>
+        </section>
+
+        <!-- GAME 1: Is Bomnia Ever Wrong? Decision Simulator -->
+        <section id="decision-game" class="game-card glass-card">
+            <div class="card-tag"><i class="fa-solid fa-scale-balanced"></i> Mini-Game #1</div>
+            <h2>The Ultimate Relationship Decision Simulator</h2>
+            <p class="card-desc">Science has attempted to solve this for centuries. Now it's your turn to answer accurately.</p>
+
+            <div class="game-box decision-box">
+                <h3 class="question-title">"In any argument or debate between us, who is 100% right?"</h3>
+                
+                <div class="decision-buttons">
+                    <button id="btn-bomnia-right" class="btn btn-success btn-lg">
+                        <i class="fa-solid fa-crown"></i> Bomnia is ALWAYS Right ✨
+                    </button>
+                    <button id="btn-bf-right" class="btn btn-danger btn-lg btn-elusive">
+                        Me (The Boyfriend) 🤡
+                    </button>
+                </div>
+
+                <div id="decision-feedback" class="feedback-msg hidden"></div>
+            </div>
+        </section>
+
+        <!-- GAME 2: Feed The Hangry Bomnia Arcade Canvas Game -->
+        <section id="hangry-game" class="game-card glass-card">
+            <div class="card-tag"><i class="fa-solid fa-burger"></i> Mini-Game #2</div>
+            <h2>Feed The Hangry Bomnia! 🧋</h2>
+            <p class="card-desc">Catch Boba, Pizza & Cuddles before her mood drops to Danger Zone! Avoid red flag distractions!</p>
+
+            <div class="arcade-container">
+                <div class="arcade-hud">
+                    <div class="hud-score">Score: <span id="game-score">0</span></div>
+                    <div class="hud-status" id="game-status">Status: Hangry Meter Safe 😊</div>
+                    <div class="hud-timer">Time: <span id="game-timer">30</span>s</div>
+                </div>
+
+                <div class="canvas-wrapper">
+                    <canvas id="hangry-canvas" width="600" height="400"></canvas>
+                    <div id="arcade-start-overlay" class="arcade-overlay">
+                        <h3>Ready to Feed Bomnia?</h3>
+                        <p>Use <strong>LEFT / RIGHT Arrows</strong> or <strong>Drag Mouse/Touch</strong> to catch snacks!</p>
+                        <button id="start-hangry-btn" class="btn btn-primary btn-lg">
+                            <i class="fa-solid fa-play"></i> Start Arcade Game
+                        </button>
+                    </div>
+                </div>
+
+                <div class="arcade-legend">
+                    <span> Good (+10): 🧋 Boba, 🍕 Pizza, 🍫 Choco, 💐 Flowers</span>
+                    <span> Avoid (-15): 📱 Left on Read, 🐌 Slow WiFi, 🥱 Bad Jokes</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- GAME 3: Relationship Shenanigans Quiz -->
+        <section id="quiz-game" class="game-card glass-card">
+            <div class="card-tag"><i class="fa-solid fa-brain"></i> Mini-Game #3</div>
+            <h2>How Well Do You Know Our Shenanigans? 🧠</h2>
+            <p class="card-desc">Take the official Bomnia Relationship Competency Test.</p>
+
+            <div id="quiz-container" class="quiz-box">
+                <div class="quiz-progress">
+                    <div class="quiz-progress-bar" id="quiz-bar" style="width: 20%;"></div>
+                </div>
+
+                <div id="quiz-step-content">
+                    <!-- Dynamic Question Inserted Here -->
+                </div>
+            </div>
+
+            <!-- Quiz Certificate Modal / Summary (Hidden initially) -->
+            <div id="quiz-result" class="quiz-result-box hidden">
+                <img src="assets/love_trophy.jpg" alt="Love Trophy" class="trophy-img">
+                <h3 id="quiz-rank-title">Certified Master of Bomnia Lore!</h3>
+                <p id="quiz-rank-desc"></p>
+                <button id="restart-quiz-btn" class="btn btn-secondary">
+                    <i class="fa-solid fa-rotate-right"></i> Retake Quiz
+                </button>
+            </div>
+        </section>
+
+        <!-- GAME 4: Spin the Wheel of Girlfriend Privileges -->
+        <section id="wheel-game" class="game-card glass-card">
+            <div class="card-tag"><i class="fa-solid fa-dharmachakra"></i> Mini-Game #4</div>
+            <h2>Wheel of Girlfriend Privileges 🎡</h2>
+            <p class="card-desc">Spin to win exclusive redeemable digital vouchers for August 1st!</p>
+
+            <div class="wheel-section-container">
+                <div class="wheel-box">
+                    <div class="wheel-pointer">🔻</div>
+                    <canvas id="wheel-canvas" width="400" height="400"></canvas>
+                    <button id="spin-wheel-btn" class="btn btn-primary spin-center-btn">
+                        SPIN! 🎡
+                    </button>
+                </div>
+
+                <div class="coupons-panel">
+                    <h3><i class="fa-solid fa-ticket"></i> Your Claimed Vouchers</h3>
+                    <div id="claimed-coupons-list" class="coupons-list">
+                        <p class="empty-msg">No vouchers claimed yet! Spin the wheel to win privileges.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- REASON CARDS / MEMORY GRID -->
+        <section class="reasons-section glass-card">
+            <h2>Why Bomnia is 1-in-a-Billion 💎</h2>
+            <p class="card-desc">Click on any card to reveal secret notes and sweet truths.</p>
+
+            <div class="reasons-grid">
+                <div class="flip-card">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <i class="fa-solid fa-face-laugh-beam"></i>
+                            <h3>Unmatched Wit</h3>
+                        </div>
+                        <div class="flip-card-back">
+                            <p>You can roast me in 0.2 seconds and make me laugh at the same time.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flip-card">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <i class="fa-solid fa-heart-circle-bolt"></i>
+                            <h3>Ultimate Comfort</h3>
+                        </div>
+                        <div class="flip-card-back">
+                            <p>Being with you feels like coming home after a long rainy day.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flip-card">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <i class="fa-solid fa-utensils"></i>
+                            <h3>Food Partner</h3>
+                        </div>
+                        <div class="flip-card-back">
+                            <p>Even when you say "I'm not hungry", you end up eating 70% of my fries. And I love it.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flip-card">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <i class="fa-solid fa-sparkles"></i>
+                            <h3>My Favorite Human</h3>
+                        </div>
+                        <div class="flip-card-back">
+                            <p>No matter how chaotic life gets, you make everything 1000x brighter.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- INTERACTIVE LOVE ENVELOPE -->
+        <section id="love-envelope" class="envelope-section glass-card">
+            <h2>Open Your Girlfriend Day Letter 💌</h2>
+            <p class="card-desc">Click the wax heart seal to unfold your special letter for August 1st.</p>
+
+            <div class="envelope-wrapper">
+                <div class="envelope" id="envelope">
+                    <div class="envelope-back"></div>
+                    <div class="letter" id="letter">
+                        <div class="letter-content">
+                            <h3>Dearest Bomnia,</h3>
+                            <p>Happy National Girlfriend Day! 💖</p>
+                            <p>
+                                Out of all the people on earth, I'm extraordinarily lucky that you are my girlfriend. 
+                                Thank you for all the laughs, the late-night talks, the playful banter, and for keeping me on my toes every single day.
+                            </p>
+                            <p>
+                                Today on August 1st (and every single day after), I celebrate YOU—your kindness, your humor, your beauty, and even your terrifying "I'm fine" moments.
+                            </p>
+                            <p class="letter-signature">Forever & always,<br>Your Favorite Boyfriend 🥰</p>
+                        </div>
+                    </div>
+                    <div class="envelope-flap"></div>
+                    <div class="envelope-front"></div>
+                    <div class="wax-seal" id="wax-seal">💖</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CELEBRATION FOOTER -->
+        <footer class="celebration-footer glass-card">
+            <h3>Happy Girlfriend Day, Bomnia! 🎉</h3>
+            <p>Made with love, sarcasm, and endless boba promises.</p>
             
-            <button id="next-btn" onclick="nextMessage()" class="bg-pink-400 hover:bg-pink-500 text-white text-lg font-bold py-3 px-8 rounded-full shadow-lg transform active:scale-95 transition-all w-full">
-                Continue 🤍
-            </button>
+            <div class="footer-buttons">
+                <button id="confetti-btn" class="btn btn-primary">
+                    <i class="fa-solid fa-gift"></i> Trigger Confetti Storm! 🎊
+                </button>
+                <button id="copy-link-btn" class="btn btn-secondary">
+                    <i class="fa-solid fa-share-nodes"></i> Share This Page
+                </button>
+            </div>
+            
+            <div class="copy-note" id="copy-note"></div>
+        </footer>
+    </main>
+
+    <!-- Modal for Claimed Voucher -->
+    <div id="voucher-modal" class="modal-backdrop hidden">
+        <div class="modal-content glass-card">
+            <button class="modal-close" id="close-modal">&times;</button>
+            <div class="voucher-ticket">
+                <div class="voucher-header">
+                    <i class="fa-solid fa-ticket-simple"></i>
+                    <span>OFFICIAL VOUCHER</span>
+                </div>
+                <h3 id="voucher-title">Voucher Title</h3>
+                <p id="voucher-desc">Valid starting August 1st. Non-transferable except to Bomnia.</p>
+                <div class="voucher-code" id="voucher-code">BOMNIA-AUG1-2026</div>
+                <button id="claim-now-btn" class="btn btn-success btn-block">
+                    <i class="fa-solid fa-check"></i> Add To My Collection
+                </button>
+            </div>
         </div>
     </div>
 
-    <!-- Step 2: The Question -->
-    <div id="step-2" class="hidden text-center w-full px-4 h-screen flex-col items-center justify-center fixed inset-0">
-        <h2 class="title-font text-4xl md:text-5xl text-pink-600 mb-8 z-10 drop-shadow-sm px-4">
-            Will you forgive me, Ania?
-        </h2>
-        
-        <div class="flex flex-col md:flex-row items-center justify-center gap-6 w-full max-w-lg z-10 mt-8">
-            <button id="btn-yes" onclick="forgiveMe()" class="bg-gradient-to-r from-green-400 to-emerald-500 text-white font-bold py-4 px-10 rounded-full shadow-xl shadow-green-200 whitespace-nowrap" style="font-size: 1.25rem;">
-                Yes, I forgive you! ❤️
-            </button>
-            
-            <button id="btn-no" onclick="handleNoClick()" class="bg-gray-400 text-white font-bold py-3 px-8 rounded-full shadow-md whitespace-nowrap" style="font-size: 1rem;">
-                No 💔
-            </button>
-        </div>
-    </div>
-
-    <!-- Step 3: Success / Forgiven -->
-    <div id="step-3" class="hidden text-center w-full max-w-md px-6 z-10">
-        <div class="text-8xl mb-6 animate-bounce-gentle">🥰</div>
-        <h1 class="title-font text-5xl text-pink-500 mb-4 drop-shadow-md">Thank You!</h1>
-        <p class="text-xl text-gray-700 font-semibold bg-white/70 p-6 rounded-2xl shadow-lg border border-white/50">
-            You are the best, Ania. I promise to make it up to you! ❤️
-        </p>
-    </div>
-
-    <script>
-        // --- State ---
-        const messages = [
-            "I wanted to talk to you...",
-            "I know I messed up, and I'm really sorry.",
-            "I value our relationship more than words can say.",
-            "I hate seeing you upset, especially because of me.",
-            "I promise to do better and be better for you.",
-            "So, I have to ask..."
-        ];
-        
-        const noButtonTexts = [
-            "No 💔",
-            "Are you sure? 🥺",
-            "Please Ania... 😭",
-            "Think about it! 🥹",
-            "Give me a chance! 🩹",
-            "Don't do this! 💔",
-            "I'm really sorry! 🧸",
-            "You're breaking my heart 🥀",
-            "I'll buy you food! 🍕",
-            "Okay, the 'Yes' button is right there 👉",
-        ];
-
-        let currentMsgIndex = 0;
-        let noClickCount = 0;
-        let yesButtonSize = 1.25; // in rem
-
-        // --- DOM Elements ---
-        const step1 = document.getElementById('step-1');
-        const step2 = document.getElementById('step-2');
-        const step3 = document.getElementById('step-3');
-        const apologyText = document.getElementById('apology-text');
-        const emojiDisplay = document.getElementById('emoji-display');
-        const btnYes = document.getElementById('btn-yes');
-        const btnNo = document.getElementById('btn-no');
-
-        // --- Functions ---
-        
-        // Progress through the apology text
-        function nextMessage() {
-            currentMsgIndex++;
-            if (currentMsgIndex < messages.length) {
-                // Fade out text
-                apologyText.style.opacity = 0;
-                setTimeout(() => {
-                    apologyText.innerText = messages[currentMsgIndex];
-                    // Change emoji based on progress
-                    if(currentMsgIndex === 1) emojiDisplay.innerText = "😔";
-                    if(currentMsgIndex === 3) emojiDisplay.innerText = "😞";
-                    if(currentMsgIndex === 4) emojiDisplay.innerText = "🤞";
-                    if(currentMsgIndex === 5) emojiDisplay.innerText = "🙏";
-                    
-                    // Fade text back in
-                    apologyText.style.opacity = 1;
-                }, 200);
-            } else {
-                // Transition to the Question
-                step1.classList.add('hidden');
-                step2.classList.remove('hidden');
-                step2.classList.add('flex', 'fade-in');
-            }
-        }
-
-        // Logic for when she clicks "No"
-        function handleNoClick() {
-            noClickCount++;
-            
-            // Change the text of the No button
-            const nextTextIndex = Math.min(noClickCount, noButtonTexts.length - 1);
-            btnNo.innerText = noButtonTexts[nextTextIndex];
-            
-            // Increase the Yes button size dramatically
-            yesButtonSize += 0.8;
-            btnYes.style.fontSize = `${yesButtonSize}rem`;
-            btnYes.style.padding = `${yesButtonSize * 0.8}rem ${yesButtonSize * 1.5}rem`;
-            
-            // Make the No button slightly smaller/transparent
-            const noScale = Math.max(0.5, 1 - (noClickCount * 0.05));
-            btnNo.style.transform = `scale(${noScale})`;
-        }
-
-        // Logic for when she finally clicks "Yes"
-        function forgiveMe() {
-            step2.classList.remove('flex');
-            step2.classList.add('hidden');
-            
-            step3.classList.remove('hidden');
-            step3.classList.add('fade-in');
-            
-            // Trigger confetti / hearts
-            startHeartShower();
-        }
-
-        // Generates floating emojis for the celebration
-        function startHeartShower() {
-            const emojis = ['❤️', '💖', '✨', '🌸', '🥰'];
-            
-            setInterval(() => {
-                const heart = document.createElement('div');
-                heart.classList.add('heart');
-                heart.innerText = emojis[Math.floor(Math.random() * emojis.length)];
-                
-                // Random horizontal start position
-                heart.style.left = Math.random() * 100 + 'vw';
-                
-                // Random animation duration between 3s and 6s
-                const duration = Math.random() * 3 + 3;
-                heart.style.animationDuration = duration + 's';
-                
-                // Random size
-                heart.style.fontSize = (Math.random() * 1.5 + 1) + 'rem';
-                
-                document.body.appendChild(heart);
-                
-                // Clean up element after animation
-                setTimeout(() => {
-                    heart.remove();
-                }, duration * 1000);
-                
-            }, 150); // Create a new heart every 150ms
-        }
-    </script>
+    <!-- Script File -->
+    <script src="app.js"></script>
 </body>
 </html>
